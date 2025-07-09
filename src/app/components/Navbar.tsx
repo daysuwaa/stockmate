@@ -47,8 +47,8 @@ const Navbar = () => {
 
       {/* Mobile Nav Menu */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 bg-white p-6 z-50 flex flex-col gap-6">
-          <div className="flex justify-between items-center shadow-lg p-4">
+        <div className="lg:hidden fixed inset-0 bg-white py-8 px-2  z-50 flex flex-col gap-6">
+          <div className="flex justify-between items-center  ">
             <h1 className="text-xl font-bold">StockMate</h1>
             <X
               onClick={() => setIsOpen(false)}
@@ -56,8 +56,8 @@ const Navbar = () => {
             />
           </div>
 
-          <ul className="flex flex-col mx-auto gap-4 text-gray-700 mt-2">
-            <li><Link href="#hero" onClick={() => setIsOpen(false)}>Home</Link></li>
+          <ul className="flex flex-col  gap-4 text-center text-gray-700 underline">
+            <li><Link href="#hero" onClick={() => setIsOpen(false)} className=''>Home</Link></li>
             <li><Link href="#features" onClick={() => setIsOpen(false)}>Features</Link></li>
             <li><Link href="#use-cases" onClick={() => setIsOpen(false)}>Use Cases</Link></li>
             <li><Link href="#testimonials" onClick={() => setIsOpen(false)}>Testimonials</Link></li>
@@ -67,7 +67,7 @@ const Navbar = () => {
                   router.push('/auth/login');
                   setIsOpen(false);
                 }}
-                className="text-sm text-gray-600 hover:underline"
+               className="text-sm border border-gray-400 py-2 px-6 rounded text-gray-600 hover:bg-gray-50 w-full"
               >
                 Login
               </button>
@@ -78,7 +78,7 @@ const Navbar = () => {
                   router.push('/auth/signup');
                   setIsOpen(false);
                 }}
-                className="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 text-sm"
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm w-full"
               >
                 Sign Up
               </button>
