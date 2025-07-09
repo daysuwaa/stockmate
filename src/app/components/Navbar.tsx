@@ -1,9 +1,93 @@
-import React from 'react'
+'use client';
+
+import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+
 
 const Navbar = () => {
-  return (
-    <div>Navbar</div>
-  )
-}
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
-export default Navbar
+  return (
+    <nav className="flex items-center justify-between  z-50 ">
+      {/* Logo */}
+      <h1 className="text-xl font-bold">StockMate</h1>
+
+      {/* Desktop Nav */}
+      <ul className="lg:flex gap-7 text-gray-700 hidden">
+        <li><Link href="#hero" className='hover:border-b-4 hover:border-blue-600'>Home</Link></li>
+        <li><Link href="#features" className='hover:border-b-4 hover:border-blue-600' >Features</Link></li>
+        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-blue-600' >Use Cases</Link></li>
+        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-blue-600' >Testimonials</Link></li>
+      </ul>
+
+      {/* Desktop Auth */}
+      <div className="lg:flex hidden items-center gap-4">
+        <button
+          onClick={() => router.push('/auth/login')}
+          className="text-sm border border-gray-400 py-2 px-6 rounded text-gray-600 hover:bg-gray-50"
+        >
+          Login
+        </button>
+        <button
+          onClick={() => router.push('/auth/signup')}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+        >
+          Sign Up
+        </button>
+      </div>
+
+      {/* Mobile Menu Icon */}
+      <Menu
+        onClick={() => setIsOpen(true)}
+        className="lg:hidden cursor-pointer"
+      />
+
+      {/* Mobile Nav Menu */}
+      {isOpen && (
+        <div className="lg:hidden fixed inset-0 bg-white p-6 z-50 flex flex-col gap-6">
+          <div className="flex justify-between items-center shadow-lg p-4">
+            <h1 className="text-xl font-bold">StockMate</h1>
+            <X
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer"
+            />
+          </div>
+
+          <ul className="flex flex-col mx-auto gap-4 text-gray-700 mt-2">
+            <li><Link href="#hero" onClick={() => setIsOpen(false)}>Home</Link></li>
+            <li><Link href="#features" onClick={() => setIsOpen(false)}>Features</Link></li>
+            <li><Link href="#use-cases" onClick={() => setIsOpen(false)}>Use Cases</Link></li>
+            <li><Link href="#testimonials" onClick={() => setIsOpen(false)}>Testimonials</Link></li>
+            <li>
+              <button
+                onClick={() => {
+                  router.push('/auth/login');
+                  setIsOpen(false);
+                }}
+                className="text-sm text-gray-600 hover:underline"
+              >
+                Login
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  router.push('/auth/signup');
+                  setIsOpen(false);
+                }}
+                className="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800 text-sm"
+              >
+                Sign Up
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+export default Navbar;
