@@ -7,16 +7,15 @@ import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
-    <div>
+    <div className="lg:mx-[8rem] my-[2rem] max-w-6xl mx-2 ">
       <Navbar/>
+      <div className="lg:mx-[5rem] my-7 mx-4">
       <Hero/>
       <Features/>
       <UseCase/>
       <Testimonials/>
-      <Footer/>
-
-     
-      
+      </div>
+      <Footer/>  
     </div>
   );
 }

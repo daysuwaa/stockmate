@@ -2,7 +2,7 @@ import React from 'react'
 
 const Features = () => {
   return (
-    <div>Features</div>
+    <div className='min-h-screen' id='features'>Features</div>
   )
 }
 

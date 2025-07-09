@@ -2,7 +2,7 @@ import React from 'react'
 
 const UseCase = () => {
   return (
-    <div>UseCase</div>
+    <div className='min-h-screen' id='use-cases'>UseCase</div>
   )
 }
 
