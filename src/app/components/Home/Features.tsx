@@ -28,15 +28,15 @@ const FeaturesComponent = ({header, icon, paragraph, colorclass}: FeaturesCompon
 const Features = () => {
   return (
 
-    <div className='min-h-sceen mt-8 max-w-6xl mx-auto' id='features'>
-       <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-100 to-yellow-100 px-4 py-2 rounded-full mb-4">
-              <Zap size={16} className="text-green-600" />
-              <span className="text-sm font-medium text-green-700">Amazing Features</span>
+    <div className='min-h-sceen mt-[4rem] mb-[8rem] max-w-6xl lg:mx-auto mx-5' id='features'>
+       <div className="text-center mb-24">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-indigo-100 px-4 py-2 rounded-full mb-4">
+              <Zap size={16} className="text-blue-600" />
+              <span className="text-sm font-medium text-blue-700">Amazing Features</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r leading-12 lg:leading-[5rem] from-green-600 to-yellow-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-12 lg:leading-[5rem]">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                Everything you need to manage 
               </span>
               <br />

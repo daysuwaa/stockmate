@@ -10,7 +10,7 @@ const Hero = () => {
   
   return (
     <div
-      className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen flex items-center justify-center "
+      className="relative bg-gradient-to-br from-slate-50 via-green-50 to-yellow-100 py-24 lg:py-0 lg:min-h-screen flex items-center justify-center "
       id="home"
     >
       <section id="hero">
@@ -49,7 +49,7 @@ const Hero = () => {
            <div className="mt-6 flex gap-4 justify-center">
   <button
     onClick={() => router.push("/auth/signup")}
-    className="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 text-sm flex items-center gap-2"
+    className="bg-gray-900 text-white px-6 py-3 rounded hover:bg-green-600 text-sm flex items-center gap-2"
   >
     Get Started <ArrowRight size={16} />
   </button>

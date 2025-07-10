@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="">
       <Navbar/>
-      <div className=" mx-auto px-4 w-full">
+      <div className="mx-auto w-full">
       <Hero/>
       <Features/>
       <UseCase/>

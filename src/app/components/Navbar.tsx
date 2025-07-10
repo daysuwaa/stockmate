@@ -17,23 +17,23 @@ const Navbar = () => {
 
       {/* Desktop Nav */}
       <ul className="lg:flex gap-7 text-gray-700 hidden">
-        <li><Link href="#hero" className='hover:border-b-4 hover:border-green-600'>Home</Link></li>
-        <li><Link href="#features" className='hover:border-b-4 hover:border-green-600' >Features</Link></li>
-        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-green-600' >Use Cases</Link></li>
-        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-green-600' >Testimonials</Link></li>
+        <li><Link href="#hero" className='hover:border-b-4 hover:border-gray-900 cursor-pointer'>Home</Link></li>
+        <li><Link href="#features" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Features</Link></li>
+        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Use Cases</Link></li>
+        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Testimonials</Link></li>
       </ul>
 
       {/* Desktop Auth */}
       <div className="lg:flex hidden items-center gap-4">
         <button
           onClick={() => router.push('/auth/login')}
-          className="text-sm border border-gray-400 py-2 px-6 rounded text-gray-600 hover:bg-gray-50"
+          className="text-sm border border-gray-400 py-2 px-6 rounded text-gray-600 hover:bg-gray-50 cursor-pointer"
         >
           Login
         </button>
         <button
           onClick={() => router.push('/auth/signup')}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm"
+          className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-green-700 text-sm cursor-pointer"
         >
           Sign Up
         </button>
@@ -78,7 +78,7 @@ const Navbar = () => {
                   router.push('/auth/signup');
                   setIsOpen(false);
                 }}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm w-full"
+                className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-green-700 text-sm w-full"
               >
                 Sign Up
               </button>
