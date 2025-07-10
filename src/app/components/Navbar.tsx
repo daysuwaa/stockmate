@@ -11,16 +11,16 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="flex items-center justify-between  z-50 ">
+    <nav className="bg-white flex items-center justify-between  z-50 p-4 ">
       {/* Logo */}
       <h1 className="text-xl font-bold">StockMate</h1>
 
       {/* Desktop Nav */}
       <ul className="lg:flex gap-7 text-gray-700 hidden">
-        <li><Link href="#hero" className='hover:border-b-4 hover:border-blue-600'>Home</Link></li>
-        <li><Link href="#features" className='hover:border-b-4 hover:border-blue-600' >Features</Link></li>
-        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-blue-600' >Use Cases</Link></li>
-        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-blue-600' >Testimonials</Link></li>
+        <li><Link href="#hero" className='hover:border-b-4 hover:border-green-600'>Home</Link></li>
+        <li><Link href="#features" className='hover:border-b-4 hover:border-green-600' >Features</Link></li>
+        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-green-600' >Use Cases</Link></li>
+        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-green-600' >Testimonials</Link></li>
       </ul>
 
       {/* Desktop Auth */}
@@ -33,7 +33,7 @@ const Navbar = () => {
         </button>
         <button
           onClick={() => router.push('/auth/signup')}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm"
         >
           Sign Up
         </button>
@@ -78,7 +78,7 @@ const Navbar = () => {
                   router.push('/auth/signup');
                   setIsOpen(false);
                 }}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm w-full"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm w-full"
               >
                 Sign Up
               </button>

@@ -7,9 +7,9 @@ import Navbar from "./components/Navbar";
 
 export default function Home() {
   return (
-    <div className="lg:mx-[8rem] my-[2rem] max-w-6xl mx-2 ">
+    <div className="">
       <Navbar/>
-      <div className="lg:mx-[5rem] my-7 mx-4">
+      <div className=" mx-auto px-4 w-full">
       <Hero/>
       <Features/>
       <UseCase/>
