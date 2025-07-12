@@ -38,7 +38,7 @@ const SignUpPage = () => {
 
          <button
          type="button" 
-        onClick={() => router.push("/pages/dashboard")}
+        onClick={() => router.push("/dashboard")}
         className="w-full  bg-rose-500 hover:bg-rose-600 text-black py-2 rounded-sm text-sm cursor-pointer"
       >
        Sign up
