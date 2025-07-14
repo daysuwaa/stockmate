@@ -10,6 +10,10 @@ import {
   Search,
   EyeIcon,
 } from 'lucide-react';
+import {  Download, Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+// import { inventoryData } from './inventorydata'; 
+import {exportToExcel} from "./Export"
 
 interface InventoryItem {
   id: string;
@@ -127,6 +131,7 @@ export default function InventoryTable() {
   }, []);
 
   const statuses = ['All', 'In Stock', 'Low Stock', 'Out of Stock'];
+    const router = useRouter();
 
   const filteredData = useMemo(() => {
     return inventoryData.filter(item => {
@@ -208,10 +213,9 @@ const closeModal = () => {
   return (
     
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">
-      {/* Filters */}
-      <div className="p-6 bg-gray-50 border-b">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
+        
+         <div className="flex gap-3 mt-4 mx-6">
+            <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
@@ -221,6 +225,24 @@ const closeModal = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
+          <button
+            className="flex items-center border gap-2 cursor-pointer bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
+            onClick={() => exportToExcel(inventoryData)}
+          >
+            <Download className="w-4 h-4" />
+            Export
+          </button>
+          <button
+            onClick={() => router.push('/add-product')}
+            className="flex items-center gap-2 bg-purple-200 cursor-pointer text-black hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors font-medium"
+          >
+            <Plus className="w-4 h-4" />
+            Add Item
+          </button>
+        </div>
+      {/* Filters */}
+      <div className="p-6 bg-gray-50 border-b">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="flex gap-3">
             <select
               value={filterCategory}
