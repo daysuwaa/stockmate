@@ -155,59 +155,63 @@ const AddProducts = () => {
     setErrors({});
   };
 
-  const InputField = ({ 
-    name, 
-    label, 
-    type = 'text', 
-    icon: Icon, 
-    placeholder, 
-    required = false,
-    min,
-    step 
-  }: {
-    name: string;
-    label: string;
-    type?: string;
-    icon: React.ElementType;
-    placeholder?: string;
-    required?: boolean;
-    min?: string;
-    step?: string;
-  }) => (
-    <div className="space-y-2">
-      <label htmlFor={name} className="flex items-center gap-2 text-sm font-medium text-gray-700">
-        <Icon className="w-4 h-4" />
-        {label}
-        {required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative">
-        <input
-          type={type}
-          id={name}
-          name={name}
-          value={formData[name as keyof typeof formData] as string}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          min={min}
-          step={step}
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-            errors[name] ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-          }`}
-        />
-        {errors[name] && (
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-          </div>
-        )}
-      </div>
+const InputField = ({ 
+  name, 
+  label, 
+  type = 'text', 
+  icon: Icon, 
+  placeholder, 
+  required = false,
+  min,
+  step,
+//   value,
+//   onChange
+}: {
+  name: string;
+  label: string;
+  type?: string;
+  icon: React.ElementType;
+  placeholder?: string;
+  required?: boolean;
+  min?: string;
+  step?: string;
+//   value?: string | number;
+//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) => (
+  <div className="space-y-2">
+    <label htmlFor={name} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+      <Icon className="w-4 h-4" />
+      {label}
+      {required && <span className="text-red-500">*</span>}
+    </label>
+    <div className="relative">
+      <input
+        type={type}
+        id={name}
+        name={name}
+        // value={value}
+        // onChange={onChange}
+        placeholder={placeholder}
+        min={min}
+        step={step}
+        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+          errors[name] ? 'border-red-500 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+        }`}
+      />
       {errors[name] && (
-        <p className="text-sm text-red-600 flex items-center gap-1">
-          <AlertCircle className="w-4 h-4" />
-          {errors[name]}
-        </p>
+        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <AlertCircle className="w-5 h-5 text-red-500" />
+        </div>
       )}
     </div>
-  );
+    {errors[name] && (
+      <p className="text-sm text-red-600 flex items-center gap-1">
+        <AlertCircle className="w-4 h-4" />
+        {errors[name]}
+      </p>
+    )}
+  </div>
+);
 
   if (submitSuccess) {
     return (
@@ -231,24 +235,9 @@ const AddProducts = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <Package className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white">Add New Product</h1>
-                <p className="text-blue-100 mt-1">Create a new product entry in your inventory</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div className="max-w-5xl mx-auto">
         {/* Form */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl w-full shadow-xl overflow-hidden">
           <div className="p-8 space-y-8">
             {/* Basic Information */}
             <div>
@@ -262,8 +251,11 @@ const AddProducts = () => {
                   label="Product Name"
                   icon={Package}
                   placeholder="Enter product name"
+                //   value={formData.productName}
+                //   onChange={handleInputChange}
                   required
                 />
+              
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                     <Tag className="w-4 h-4" />
@@ -315,16 +307,18 @@ const AddProducts = () => {
                 Pricing & Inventory
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <InputField
-                  name="price"
-                  label="Price"
-                  type="number"
-                  icon={DollarSign}
-                  placeholder="0.00"
-                  required
-                  min="0"
-                  step="0.01"
-                />
+               <InputField
+                 name="price"
+                 label="Price"
+                 type="number"
+                 icon={DollarSign}
+                 placeholder="0.00"
+                 required
+                 min="0"
+                 step="0.01"
+                //  value={formData.price}
+                //  onChange={handleInputChange}
+/>
                 <InputField
                   name="quantity"
                   label="Quantity"
@@ -333,6 +327,8 @@ const AddProducts = () => {
                   placeholder="0"
                   required
                   min="0"
+                //   value={formData.quantity}
+                //   onChange={handleInputChange}
                 />
                 <InputField
                   name="minStockLevel"
@@ -342,6 +338,8 @@ const AddProducts = () => {
                   placeholder="0"
                   required
                   min="0"
+                //   value={formData.minStockLevel}
+                //   onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -359,11 +357,15 @@ const AddProducts = () => {
                   icon={Hash}
                   placeholder="Enter SKU"
                   required
+                //   value={formData.sku}
+                //   onChange={handleInputChange}
                 />
                 <InputField
                   name="supplier"
                   label="Supplier"
                   icon={Package}
+                //   value={formData.supplier}
+                //   onChange={handleInputChange}
                   placeholder="Enter supplier name"
                   required
                 />
@@ -371,12 +373,16 @@ const AddProducts = () => {
                   name="expiryDate"
                   label="Expiry Date"
                   type="date"
+                //   value={formData.expiryDate}
+                //   onChange={handleInputChange}
                   icon={Calendar}
                 />
                 <InputField
                   name="tags"
                   label="Tags"
                   icon={Tag}
+                //   value={formData.tags}
+                //   onChange={handleInputChange}
                   placeholder="Enter tags separated by commas"
                 />
               </div>

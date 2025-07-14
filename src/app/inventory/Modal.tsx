@@ -20,7 +20,7 @@ const Modal = ({
         {children}
         <button
           onClick={onClose}
-          className="absolute top-3  right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 text-3xl cursor-pointer  right-3 text-gray-500 hover:text-gray-800"
         >
           &times;
         </button>

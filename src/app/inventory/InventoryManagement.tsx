@@ -303,19 +303,19 @@ const closeModal = () => {
                     <ActionButton
                     icon={Eye}
                     onClick={() => openModal('view', item)}
-                    className="hover:bg-blue-100 hover:text-blue-600"
+                    className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
                     title="View Details"
                     />
                     <ActionButton
                     icon={Edit}
                     onClick={() => openModal('edit', item)}
-                    className="hover:bg-green-100 hover:text-green-600"
+                    className="hover:bg-green-100 hover:text-green-600 cursor-pointer"
                     title="Edit Item"
                     />
                     <ActionButton
                     icon={Trash2}
                     onClick={() => openModal('delete', item)}
-                    className="hover:bg-red-100 hover:text-red-600"
+                    className="hover:bg-red-100 hover:text-red-600 cursor-pointer"
                     title="Delete Item"
                      />
                     </div>
