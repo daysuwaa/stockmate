@@ -1,8 +1,13 @@
 'use client';
-import React from 'react';
+import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 
 const SignUpPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const toggleVisibility = () =>{
+  setShowPassword(!showPassword);
+  }
   const router = useRouter();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -27,15 +32,21 @@ const SignUpPage = () => {
           />
         </div>
 
-        <div className="flex flex-col">
+       <div className="flex flex-col relative">
           <label htmlFor="password" className="text-sm text-gray-700">Password</label>
           <input
-            type="password"
+            type={showPassword ? "text" :"password" }
             placeholder="*********"
             className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
           />
+          <button 
+            type="button"
+            onClick={toggleVisibility} 
+            className="absolute right-3 top-[30px]"
+          >
+           {showPassword ? <EyeOff/> : <Eye/>}
+          </button>
         </div>
-
          <button
          type="button" 
         onClick={() => router.push("/dashboard")}
