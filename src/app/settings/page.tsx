@@ -5,7 +5,7 @@ import Settings from './Settings'
 
 const page = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen  bg-gradient-to-br from-white to-green-50">
       <Sidebar/>
       <div className="flex-1 overflow-y-auto lg:ml-[16rem]">
         <Header/>

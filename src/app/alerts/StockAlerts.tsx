@@ -104,7 +104,7 @@ const lowStockItems = [
 
 const StockAlerts = () => {
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-red-50 to-yellow-50">
+    <div className="min-h-screen p-6 bg-gradient-to-br from-white to-red-50">
       <div className="max-w-5xl mx-auto space-y-6">
 
         <div className="bg-white shadow rounded-2xl overflow-hidden">
@@ -123,7 +123,7 @@ const StockAlerts = () => {
               {lowStockItems.map((item) => (
                 <tr key={item.id} className="border-t ">
                   <td className="p-4 font-medium flex items-center gap-2">
-                    <Package className="w-4 h-4 text-purple-500" />
+                    <Package className="w-4 h-4 text-red-500" />
                     {item.name}
                   </td>
                   <td className="p-4">{item.sku}</td>
