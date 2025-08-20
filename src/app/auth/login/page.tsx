@@ -7,10 +7,14 @@ import { Eye, EyeOff } from 'lucide-react';
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const toggleVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const isFormFilled = email.trim() !== '' && password.trim() !== '';
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -22,6 +26,8 @@ const Login = () => {
           <label htmlFor="email" className="text-sm text-gray-700">Email</label>
           <input
             type="email"
+            value={email}
+            onChange={(e)=> setEmail(e.target.value)}
             placeholder="johndoe@email.com"
             className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
           />
@@ -30,6 +36,8 @@ const Login = () => {
         <div className="flex flex-col relative">
           <label htmlFor="password" className="text-sm text-gray-700">Password</label>
           <input
+            value={password}
+            onChange={(e)=> setPassword(e.target.value)}
             type={showPassword ? "text" :"password" }
             placeholder="*********"
             className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
@@ -46,7 +54,12 @@ const Login = () => {
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
-          className="w-full bg-rose-500 hover:bg-rose-600 text-black py-2 rounded-sm text-sm cursor-pointer"
+          disabled={!isFormFilled}
+          className={`w-full py-2 rounded-sm text-sm cursor-pointer ${
+            isFormFilled
+              ? "bg-rose-500 hover:bg-rose-600 text-black"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           Log in
         </button>
