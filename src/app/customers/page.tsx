@@ -1,7 +1,8 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import StockAlerts from './StockAlerts'
+import CustomersPage from './CustomersPage'
 import Header from './Header'
+
 
 const page = () => {
   return (
@@ -9,7 +10,7 @@ const page = () => {
       <Sidebar/>
       <div className="flex-1 overflow-y-auto lg:ml-[16rem]">
         <Header/>
-      <StockAlerts/>
+      <CustomersPage/>
       </div>
       
     </div>
