@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import AddCustomerModal from "./AddCustomerModal";
+import toast from "react-hot-toast"
 import {
   // User,
   Mail,
@@ -10,7 +12,7 @@ import {
   X,
   Calendar,
   Tag,
-  Edit,
+  // Edit,
   Trash2,
 } from "lucide-react";
 
@@ -50,7 +52,9 @@ const customers = [
 const CustomersPage = () => {
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  const [isModalOpen, setIsModalOpen ] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  
   // Open modal with animation
   const handleOpen = (id: number) => {
     setOpenModal(id);
@@ -62,6 +66,10 @@ const CustomersPage = () => {
     setIsModalVisible(false);
     setTimeout(() => setOpenModal(null), 200);
   };
+
+  const handleCloseDeleteModal = () =>{
+    setIsDeleteModalOpen(false)
+  }
 
   // Close modal on escape key
   useEffect(() => {
@@ -96,7 +104,7 @@ const CustomersPage = () => {
             <User className="w-6 h-6" />
             Customers
           </h1> */}
-          <button className=" ml-auto flex items-center gap-2 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-all duration-200 hover:scale-105 shadow-lg">
+          <button onClick={()=>setIsModalOpen(true)} className=" cursor-pointer ml-auto flex items-center gap-2 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-all duration-200 hover:scale-105 shadow-lg">
             <Plus className="w-4 h-4" />
             Add Customer
           </button>
@@ -279,12 +287,22 @@ const CustomersPage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
-                <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+              <div className="flex gap-3 pt-4 border-t justify-between border-gray-200">
+                {/* <button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
                   <Edit className="w-4 h-4" />
                   Edit Customer
+                </button> */}
+                <button
+                  onClick={handleClose}
+                  className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
+                >
+                  Close
                 </button>
-                <button className="flex items-center justify-center gap-2 bg-red-100 text-red-600 px-4 py-3 rounded-lg hover:bg-red-200 transition-colors duration-200 font-medium">
+                <button onClick={()=>{
+               
+                  handleClose()
+                  setIsDeleteModalOpen(true);
+                }} className="flex items-center justify-center gap-2 bg-red-100 text-red-600 px-4 py-3 rounded-lg hover:bg-red-200 transition-colors duration-200 font-medium">
                   <Trash2 className="w-4 h-4" />
                   Delete
                 </button>
@@ -292,7 +310,7 @@ const CustomersPage = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="bg-gray-50 px-6 py-4 rounded-b-2xl">
+            {/* <div className="bg-gray-50 px-6 py-4 rounded-b-2xl">
               <div className="flex justify-end">
                 <button
                   onClick={handleClose}
@@ -301,10 +319,60 @@ const CustomersPage = () => {
                   Close
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
+      {
+  isDeleteModalOpen && (
+    <div className="fixed inset-0 bg-[#0000008a] bg-opacity-50 flex items-center justify-center z-50 p-4 transition-opacity duration-200">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-200 scale-100">
+        {/* Header */}
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+              <Trash2 className="w-6 h-6 text-red-600" />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">Delete Customer</h2>
+              <p className="text-sm text-gray-500">This action cannot be undone</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="p-6">
+          <p className="text-gray-700">
+            Are you sure you want to delete this customer? All associated data will be permanently removed.
+          </p>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 p-6 pt-0">
+          <button
+            onClick={handleCloseDeleteModal}
+            className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              handleCloseDeleteModal();
+              toast.success('Customer deleted successfully!');
+            }}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+      <AddCustomerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        />
     </div>
   );
 };
