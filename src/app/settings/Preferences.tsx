@@ -1,38 +1,29 @@
 'use client';
-import React, { useState } from 'react';
-import { Globe, Bell, Moon, DollarSign } from 'lucide-react';
+import React from 'react';
+import { Globe, Moon, DollarSign } from 'lucide-react';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store/store";
+import { updatePreferences } from "../redux/slices/settingsSlice";
 
 const Preferences = () => {
-  const [form, setForm] = useState({
-    language: 'en',
-    currency: 'USD',
-    theme: 'light',
-    emailAlerts: true
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement | HTMLSelectElement;
-    const { name, value, type } = target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (target as HTMLInputElement).checked : value
-    }));
-  };
+  const dispatch = useDispatch();
+  const preferences = useSelector((state: RootState) => state.settings.preferences);
 
   return (
-   <div className=" lg:max-w-3xl lg:mx-0 border-gray-200 border shadow-lg rounded-lg p-5">
+   <div className="lg:max-w-3xl lg:mx-0 border-gray-200 border shadow-lg rounded-lg p-5">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
         <Globe className="w-5 h-5" />
         Preferences
       </h2>
 
       {/* Language */}
-      <div className="mb-6">
+      <div className="mb-6 ">
         <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
         <select
-          name="language"
-          value={form.language}
-          onChange={handleChange}
+          value={preferences.language}
+          onChange={(e)=>
+            dispatch(updatePreferences({ language: e.target.value }))
+          }
           className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500"
         >
           <option value="en">English</option>
@@ -40,7 +31,6 @@ const Preferences = () => {
           <option value="es">Spanish</option>
         </select>
       </div>
-
       {/* Currency */}
       <div className="mb-6">
         <label className=" text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -48,9 +38,10 @@ const Preferences = () => {
           Currency
         </label>
         <select
-          name="currency"
-          value={form.currency}
-          onChange={handleChange}
+          value={preferences.currency}
+          onChange={(e)=>{
+            dispatch(updatePreferences({ currency: e.target.value }))
+          }}
           className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500"
         >
           <option value="USD">$ USD</option>
@@ -60,15 +51,18 @@ const Preferences = () => {
       </div>
 
       {/* Theme */}
-      <div className="mb-6">
+      <div className="mb-6 ">
         <label className=" text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
           <Moon className="w-4 h-4" />
           Theme
         </label>
         <select
-          name="theme"
-          value={form.theme}
-          onChange={handleChange}
+          value={preferences.darkMode}
+          // inside Preferences component
+onChange={(e) => {
+  console.log("PREF select change:", e.target.value); // <--- see value
+  dispatch(updatePreferences({ darkMode: e.target.value as "light" | "dark" }));
+}}
           className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500"
         >
           <option value="light">Light</option>
@@ -77,19 +71,20 @@ const Preferences = () => {
       </div>
 
       {/* Notifications */}
-      <div className="mb-6 flex items-center gap-3">
+      {/* <div className="mb-6 flex items-center gap-3">
         <input
           type="checkbox"
-          name="emailAlerts"
-          checked={form.emailAlerts}
-          onChange={handleChange}
+          checked={preferences.notifications ?? true}
+          onChange={(e) => 
+            dispatch(updatePreferences({ notifications: e.target.checked }))
+          }
           className="w-5 h-5 text-purple-600"
         />
-        <label htmlFor="emailAlerts" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+        <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
           <Bell className="w-4 h-4" />
           Enable Email Notifications
         </label>
-      </div>
+      </div> */}
 
       <button
         className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"

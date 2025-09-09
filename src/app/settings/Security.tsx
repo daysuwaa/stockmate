@@ -1,11 +1,12 @@
 "use client"
 import { Shield} from "lucide-react";
-import React, {useState} from "react"
-
+import React from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store/store";
+import {  updateSecurity } from "../redux/slices/settingsSlice";
 const Security = () => {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState ('');
+  const dispatch = useDispatch();
+  const security = useSelector((state:RootState)=>state.settings.security)
 
   
   return (
@@ -14,23 +15,26 @@ const Security = () => {
       <label>Current Password</label>
       <input
         type="password"
-        value={currentPassword}
-        onChange={(e) => setCurrentPassword(e.target.value)}
+        value={security.currentPassword}
+        onChange={(e) => 
+          dispatch(updateSecurity({currentPassword:e.target.value}))}
         className="w-full px-4 py-3 my-4 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
          />
       <label>New Password</label>
       <input
         type="password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
+        value={security.newPassword}
+        onChange={(e) => 
+           dispatch(updateSecurity({newPassword:e.target.value}))}
         className="w-full px-4 py-3 my-4 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
          />
         
       <label>Confirm Password</label>
       <input
       type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        value={security.confirmPassword}
+        onChange={(e) => 
+           dispatch(updateSecurity({confirmPassword:e.target.value}))}
         className="w-full px-4 py-3 my-4 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
          />
 

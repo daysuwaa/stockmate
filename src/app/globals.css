@@ -1,10 +1,13 @@
+/* globals.css */
 @import "tailwindcss";
 
-body{
-  background-color: rgb(242, 242, 242);
+:root { --bg: #f2f2f2; --fg: #0a0a0a; }
+html.dark { --bg: #0b1220; --fg: #e5e7eb; }
+
+body {
+  /* background: var(--bg);
+  color: var(--fg); */
   font-size: 13px;
 }
 
-html{
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }

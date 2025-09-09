@@ -10,7 +10,7 @@ type Profile = {
 }
 
 type Preferences = {
-    darkMode:boolean;
+    darkMode:"light"| "dark";
     language:string;
     currency: string;
 }
@@ -38,7 +38,7 @@ const initialState: SettingsState = {
  },
 
     preferences:{
-        darkMode: false,
+        darkMode: "light",
         language:'en',
         currency:'USD',
     },
@@ -57,18 +57,18 @@ const settingsSlice = createSlice({
         updateProfile: 
         (
             state, 
-            action: PayloadAction<Profile>)=>{
+            action: PayloadAction<Partial<Profile>>)=>{
             state.profile = {...state.profile, ...action.payload}
         },
 
         updatePreferences: (
             state, 
-            action: PayloadAction<Preferences>)=>{
+            action: PayloadAction<Partial<Preferences>>)=>{
             state.preferences = {...state.preferences, ...action.payload}
         },
         updateSecurity: (
             state, 
-            action: PayloadAction<Security>)=>{
+            action: PayloadAction<Partial<Security>>)=>{
             state.security = {...state.security, ...action.payload}
         },
     }
