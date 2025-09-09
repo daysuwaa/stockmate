@@ -6,10 +6,12 @@ import InventoryTable from './InventoryTable'
 import LowStock from './LowStock'
 import AddProduct from './AddProduct'
 import RecentLogs from './RecentLogs'
+import RequireAuth from '../components/RequireAuth'
 
 const page = () => {
   return (
     <div className="flex h-screen">
+      <RequireAuth>
       <Sidebar/>
       <div className="flex-1 overflow-y-auto lg:ml-[16rem]">
        <Header/>
@@ -20,8 +22,9 @@ const page = () => {
       <AddProduct/>
       <RecentLogs/>
       </div>
-      </div>
       
+      </div>
+      </RequireAuth>
     </div>
   )
 }

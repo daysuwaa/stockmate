@@ -9,7 +9,7 @@ export const store = configureStore({
         product:productReducers,
         settings: settingsReducers,
     },
-    devTools: process.env.NODE_ENV !== "production",
+devTools :process.env.NODE_ENV !== 'production',
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

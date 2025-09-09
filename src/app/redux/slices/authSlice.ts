@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import axios from "axios";
 type User = {
   id: string;
   name: string;
@@ -24,23 +24,60 @@ const initialState: AuthState = {
 };
 
 // ---------Thunks ----------------------
-// login
-export const loginUser = createAsyncThunk<
-  { user: User; token: string },
-  { email: string; password: string },
-  { rejectValue: string }
->('auth/loginUser', async (body, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.post('/auth/login', body);
-    // expected response shape: { user, token }
-    return data;
-  } catch (err: any) {
-    const msg = err?.response?.data?.message || 'Login failed';
-    return rejectWithValue(msg);
-  }
-});
+// 3) FETCH ME (when you already have a token)
+// export const fetchMe = createAsyncThunk<
+//   User,
+//   void,
+//   { rejectValue: string; state: { auth: AuthState } }
+// >('auth/fetchMe', async (_, { rejectWithValue }) => {
+//   try {
+//     const { data } = await axios.get('/auth/me');
+//     return data.user as User;
+//   } catch (err: any) {
+//     const msg = err?.response?.data?.message || 'Failed to fetch profile';
+//     return rejectWithValue(msg);
+//   }
+// })
 
-// 2) REGISTER
+// login thunk
+// export const loginUser = createAsyncThunk<
+//   { user: User; token: string },                 // success payload
+//   { email: string; password: string },           // input arg
+//   { rejectValue: string }                        // error payload
+// >('auth/loginUser', async (body, { rejectWithValue }) => {
+//   try {
+//     // Call your backend: expects { user, token }
+//     const res = await axios.post('/auth/login', body);
+//     return res.data as { user: User; token: string };
+//   } catch (err: unknown) {
+//     // Turn any error into a friendly string for UI
+//     let msg = 'Login failed';
+//     if (typeof err === 'object' && err !== null) {
+//       const e = err as { response?: { data?: { message?: string } }; message?: string };
+//       msg = e?.response?.data?.message ?? e?.message ?? msg;
+//     }
+//     return rejectWithValue(msg);
+//   }
+// });
+
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async ({ email, password }: { email: string; password: string }) => {
+  // instead of calling axios, just return dummy data after a delay
+  await new Promise(res => setTimeout(res, 800)); // simulate loading
+
+  if (email === "adesuwa@example.com" && password === "secret") {
+  return {
+  user: { id: "1", name: "susu", email },
+  token: "fake-token-123",
+  };
+  }
+
+  // if wrong details
+  throw new Error("Invalid credentials");
+  }
+);
+// register thunk
 export const registerUser = createAsyncThunk<
   { user: User; token: string },
   { name: string; email: string; password: string },
@@ -49,50 +86,78 @@ export const registerUser = createAsyncThunk<
   try {
     const { data } = await axios.post('/auth/register', body);
     return data;
-  } catch (err: any) {
-    const msg = err?.response?.data?.message || 'Registration failed';
+  } catch (err: unknown) {
+    // Turn any error into a friendly string for UI
+    let msg = 'Login failed';
+    if (typeof err === 'object' && err !== null) {
+      const e = err as { response?: { data?: { message?: string } }; message?: string };
+      msg = e?.response?.data?.message ?? e?.message ?? msg;
+    }
     return rejectWithValue(msg);
   }
 });
-
-// 3) FETCH ME (when you already have a token)
-export const fetchMe = createAsyncThunk<
-  User,
-  void,
-  { rejectValue: string; state: { auth: AuthState } }
->('auth/fetchMe', async (_, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.get('/auth/me');
-    return data.user as User;
-  } catch (err: any) {
-    const msg = err?.response?.data?.message || 'Failed to fetch profile';
-    return rejectWithValue(msg);
-  }
-})
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (
-      state,
-      action: PayloadAction<{ user: User; token: string }>) => {
+    login: (state, action: PayloadAction<{ user: User; token: string }>) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
+      state.error = null;
+      state.status = 'succeeded';
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      state.status = 'idle';
+      state.error = null;
     },
-    updateUser: (state, action: PayloadAction<User>) => {
-      if (state.user) {
-        state.user = { ...state.user, ...action.payload };
-      }
+    registerUser: (state, action: PayloadAction<{ user: User; token: string }>) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.error = null;
+      state.status = 'succeeded';
     },
+    updateUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) state.user = { ...state.user, ...action.payload };
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload.user;         
+        state.isAuthenticated = true;   
+        state.token = action.payload.token   ; 
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = (action.payload as string) || 'Failed to fetch user';
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload.user;         
+        state.isAuthenticated = true;   
+        state.token = action.payload.token   ; 
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = (action.payload as string) || 'Failed to fetch user';
+      });
   },
 });
 
-export const { login, logout, updateUser } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;
