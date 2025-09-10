@@ -1,6 +1,9 @@
 "use client"
-import { Package, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react';
-import React, { ReactNode } from 'react';
+import { Package, TrendingUp, AlertTriangle, CircleAlert } from 'lucide-react';
+import React, { ReactNode , useEffect} from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store/store"; 
+import { fetchInventoryStats } from '../redux/slices/inventorySlice';
 
 type StatsCardProps = {
     label: string;
@@ -62,53 +65,44 @@ const Stats = () => {
             </div>
         );
     };
+    const dispatch = useDispatch<AppDispatch>();
+const stats = useSelector((s: RootState) => s.product.stats);
+
+useEffect(() => {
+  dispatch(fetchInventoryStats());
+}, [dispatch]);
 
     return (
         <div>
-        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 p-6'>
-            <StatsCard
-                icon={<Package className="w-6 h-6 text-blue-600" />}
-                label="Items in Stock"
-                iconBg="bg-blue-100"
-                value="1,247"
-                gradient="bg-gradient-to-br from-blue-50 to-blue-100"
-                description="Active inventory across all warehouses"
-                trend="up"
-                trendValue="+12%"
-            />
+        <div className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6 p-6'>
+
+<StatsCard
+  icon={<Package className="w-6 h-6 text-blue-600" />}
+  label="Items in Stock"
+  iconBg="bg-blue-100"
+  value={stats?.totalItems.toString() ?? "0"}
+  gradient="bg-gradient-to-br from-blue-50 to-blue-100"
+  description="Active inventory across all warehouses"
+/>
+
+<StatsCard
+  icon={<AlertTriangle className="w-6 h-6 text-amber-600" />}
+  label="Low Stock Alert"
+  iconBg="bg-amber-100"
+  value={stats?.lowStock.toString() ?? "0"}
+  gradient="bg-gradient-to-br from-amber-50 to-amber-100"
+  description="Items requiring immediate restocking"
+/>
+
+<StatsCard
+  icon={<CircleAlert className="w-6 h-6 text-red-600" />}
+  label="Out of Stock"
+  iconBg="bg-red-100"
+  value={`${stats?.outOfStock.toLocaleString() ?? "0"}`}
+  gradient="bg-gradient-to-br from-red-100 to-red-200"
+  description="Monthly sales performance"
+/>
             
-            <StatsCard
-                icon={<AlertTriangle className="w-6 h-6 text-amber-600" />}
-                label="Low Stock Alert"
-                iconBg="bg-amber-100"
-                value="23"
-                gradient="bg-gradient-to-br from-amber-50 to-amber-100"
-                description="Items requiring immediate restocking"
-                trend="down"
-                trendValue="-5%"
-            />
-            
-            <StatsCard
-                icon={<DollarSign className="w-6 h-6 text-green-600" />}
-                label="Total Revenue"
-                iconBg="bg-green-100"
-                value="$24,560"
-                gradient="bg-gradient-to-br from-green-50 to-green-100"
-                description="Monthly sales performance"
-                trend="up"
-                trendValue="+18%"
-            />
-            
-            <StatsCard
-                icon={<TrendingUp className="w-6 h-6 text-purple-600" />}
-                label="Growth Rate"
-                iconBg="bg-purple-100"
-                value="8.2%"
-                gradient="bg-gradient-to-br from-purple-50 to-purple-100"
-                description="Year-over-year business growth"
-                trend="up"
-                trendValue="+2.1%"
-            />
         </div>
         </div>
     );

@@ -1,142 +1,51 @@
-"use client"
-import React, { useState, useMemo } from 'react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Edit, 
-  Trash2, 
-  Eye, 
+"use client";
+import React, { useState, useMemo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchInventory } from "../redux/slices/inventorySlice";
+import { AppDispatch, RootState } from "../redux/store/store"; 
+import {
+  ChevronLeft,
+  ChevronRight,
   Search,
-} from 'lucide-react';
-import Link from 'next/link';
-
-interface InventoryItem {
-  id: string;
-  name: string;
-  category: string;
-  quantity: number;
-  status: 'In Stock' | 'Low Stock' | 'Out of Stock';
-  updated: string;
-  price: number;
-}
-
-const inventoryData: InventoryItem[] = [
-  {
-    id: '1',
-    name: 'Wireless Headphones',
-    category: 'Electronics',
-    quantity: 45,
-    status: 'In Stock',
-    updated: '2025-01-10',
-    price: 89.99
-  },
-  {
-    id: '2',
-    name: 'Coffee Maker',
-    category: 'Appliances',
-    quantity: 12,
-    status: 'Low Stock',
-    updated: '2025-01-09',
-    price: 149.99
-  },
-  {
-    id: '3',
-    name: 'Desk Chair',
-    category: 'Furniture',
-    quantity: 0,
-    status: 'Out of Stock',
-    updated: '2025-01-08',
-    price: 299.99
-  },
-  {
-    id: '4',
-    name: 'Laptop Stand',
-    category: 'Electronics',
-    quantity: 78,
-    status: 'In Stock',
-    updated: '2025-01-12',
-    price: 35.99
-  },
-  {
-    id: '5',
-    name: 'Water Bottle',
-    category: 'Accessories',
-    quantity: 156,
-    status: 'In Stock',
-    updated: '2025-01-11',
-    price: 24.99
-  },
-//   {
-//     id: '6',
-//     name: 'Smartphone Case',
-//     category: 'Electronics',
-//     quantity: 8,
-//     status: 'Low Stock',
-//     updated: '2025-01-07',
-//     price: 19.99
-//   },
-//   {
-//     id: '7',
-//     name: 'Desk Lamp',
-//     category: 'Furniture',
-//     quantity: 23,
-//     status: 'In Stock',
-//     updated: '2025-01-13',
-//     price: 75.99
-//   },
-//   {
-//     id: '8',
-//     name: 'Bluetooth Speaker',
-//     category: 'Electronics',
-//     quantity: 34,
-//     status: 'In Stock',
-//     updated: '2025-01-06',
-//     price: 129.99
-//   },
-//   {
-//     id: '9',
-//     name: 'Office Mug',
-//     category: 'Accessories',
-//     quantity: 5,
-//     status: 'Low Stock',
-//     updated: '2025-01-05',
-//     price: 12.99
-//   },
-//   {
-//     id: '10',
-//     name: 'Keyboard',
-//     category: 'Electronics',
-//     quantity: 67,
-//     status: 'In Stock',
-//     updated: '2025-01-14',
-//     price: 79.99
-//   }
-];
+} from "lucide-react";
+import Link from "next/link";
 
 export default function InventoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState('All');
-  const [filterStatus, setFilterStatus] = useState('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
+  const dispatch = useDispatch<AppDispatch>();
+  const { items, loading, error } = useSelector((s: RootState) => s.product);
 
+  useEffect(() => {
+    dispatch(fetchInventory()); 
+  }, [dispatch]);
+
+
+  // ✅ categories now come from Redux items
   const categories = useMemo(() => {
-    const cats = [...new Set(inventoryData.map(item => item.category))];
-    return ['All', ...cats];
-  }, []);
+  const cats = [...new Set(items.map((item) => item.category))];
+  return ["All", ...cats];
+}, [items]);
 
-  const statuses = ['All', 'In Stock', 'Low Stock', 'Out of Stock'];
+  // Define possible statuses for filtering
+  const statuses = ["All", "In Stock", "Low Stock", "Out of Stock"];
 
-  const filteredData = useMemo(() => {
-    return inventoryData.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           item.category.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = filterCategory === 'All' || item.category === filterCategory;
-      const matchesStatus = filterStatus === 'All' || item.status === filterStatus;
-      
-      return matchesSearch && matchesCategory && matchesStatus;
-    });
-  }, [searchTerm, filterCategory, filterStatus]);
+const filteredData = useMemo(() => {
+  return items.filter((item) => {
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      filterCategory === "All" || item.category === filterCategory;
+    const matchesStatus =
+      filterStatus === "All" || item.status === filterStatus;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+}, [items, searchTerm, filterCategory, filterStatus]);
+
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -145,29 +54,29 @@ export default function InventoryTable() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'In Stock':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'Low Stock':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Out of Stock':
-        return 'bg-red-100 text-red-800 border-red-200';
+      case "In Stock":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "Low Stock":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "Out of Stock":
+        return "bg-red-100 text-red-800 border-red-200";
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(price);
   };
 
@@ -177,26 +86,34 @@ export default function InventoryTable() {
     }
   };
 
-  const ActionButton = ({ icon: Icon, onClick, className = "", title }: {
-    icon: React.ElementType;
-    onClick: () => void;
-    className?: string;
-    title: string;
-  }) => (
-    <button
-      onClick={onClick}
-      className={`p-2 rounded-lg transition-colors duration-200 ${className}`}
-      title={title}
-    >
-      <Icon className="w-4 h-4" />
-    </button>
-  );
-
+  // const ActionButton = ({
+  //   icon: Icon,
+  //   onClick,
+  //   className = "",
+  //   title,
+  // }: {
+  //   icon: React.ElementType;
+  //   onClick: () => void;
+  //   className?: string;
+  //   title: string;
+  // }) => (
+  //   <button
+  //     onClick={onClick}
+  //     className={`p-2 rounded-lg transition-colors duration-200 ${className}`}
+  //     title={title}
+  //   >
+  //     <Icon className="w-4 h-4" />
+  //   </button>
+  // );
+if (loading) return <p className="p-4 text-xl">Loading...</p>;
+if (error) return <p className="p-4 text-red-600">{error}</p>;
   return (
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">
       {/* Filters */}
       <div className="p-6 bg-gray-50 border-b">
-        <Link href='/inventory' className='text-2xl font-bold mb-3'>Inventory Table</Link>
+        <Link href="/inventory" className="text-2xl font-bold mb-3">
+          Inventory Table
+        </Link>
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -214,8 +131,10 @@ export default function InventoryTable() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
               ))}
             </select>
             <select
@@ -223,8 +142,10 @@ export default function InventoryTable() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              {statuses.map(status => (
-                <option key={status} value={status}>{status}</option>
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
               ))}
             </select>
           </div>
@@ -254,13 +175,13 @@ export default function InventoryTable() {
               <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Last Updated
               </th>
-              <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {currentItems.map((item,) => (
+            {currentItems.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">{item.name}</div>
@@ -275,7 +196,11 @@ export default function InventoryTable() {
                   {item.quantity.toLocaleString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(item.status)}`}>
+                  <span
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(
+                      item.status
+                    )}`}
+                  >
                     {item.status}
                   </span>
                 </td>
@@ -285,28 +210,28 @@ export default function InventoryTable() {
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                   {formatDate(item.updated)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-center">
+                {/* <td className="px-6 py-4 whitespace-nowrap text-center">
                   <div className="flex justify-center gap-1">
                     <ActionButton
                       icon={Eye}
-                      onClick={() => console.log('View', item.id)}
+                      onClick={() => console.log("View", item.id)}
                       className="hover:bg-blue-100 hover:text-blue-600"
                       title="View Details"
                     />
                     <ActionButton
                       icon={Edit}
-                      onClick={() => console.log('Edit', item.id)}
+                      onClick={() => console.log("Edit", item.id)}
                       className="hover:bg-green-100 hover:text-green-600"
                       title="Edit Item"
                     />
                     <ActionButton
                       icon={Trash2}
-                      onClick={() => console.log('Delete', item.id)}
+                      onClick={() => dispatch(deleteInventoryItem(item.id))}
                       className="hover:bg-red-100 hover:text-red-600"
                       title="Delete Item"
                     />
                   </div>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
@@ -335,7 +260,7 @@ export default function InventoryTable() {
           </span>
         </div>
 
-        <div className="flex  mx-auto justify-center items-center gap-2">
+        <div className="flex mx-auto justify-center items-center gap-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -343,24 +268,23 @@ export default function InventoryTable() {
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
-          
+
           <div className="flex gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
                 className={`px-3 py-1 rounded-lg text-sm transition-colors ${
                   currentPage === page
-                    ? 'bg-blue-600 text-white'
-                    : 'hover:bg-gray-100 text-gray-700'
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-gray-100 text-gray-700"
                 }`}
               >
                 {page}
               </button>
             ))}
           </div>
-          
-          
+
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -368,11 +292,11 @@ export default function InventoryTable() {
           >
             <ChevronRight className="w-4 h-4" />
           </button>
-         
         </div>
-         <Link href="/inventory" className='text-blue-500 text-sm underline'>More</Link>
+        <Link href="/inventory" className="text-blue-500 text-sm underline">
+          More
+        </Link>
       </div>
-      
     </div>
   );
 }

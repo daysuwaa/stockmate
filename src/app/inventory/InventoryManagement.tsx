@@ -1,5 +1,8 @@
 "use client"
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchInventory, deleteInventoryItem , updateInventoryItem} from "../redux/slices/inventorySlice";
+import { AppDispatch, RootState } from "../redux/store/store"; 
 import Modal from './Modal';
 import { 
   ChevronLeft, 
@@ -13,7 +16,7 @@ import {
 import {  Download, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 // import { inventoryData } from './inventorydata'; 
-import {exportToExcel} from "./Export"
+// import {exportToExcel} from "./Export"
 
 interface InventoryItem {
   id: string;
@@ -25,98 +28,27 @@ interface InventoryItem {
   price: number;
 }
 
-export const inventoryData: InventoryItem[] = [
-  {
-    id: '1',
-    name: 'Wireless Headphones',
-    category: 'Electronics',
-    quantity: 45,
-    status: 'In Stock',
-    updated: '2025-01-10',
-    price: 89.99
-  },
-  {
-    id: '2',
-    name: 'Coffee Maker',
-    category: 'Appliances',
-    quantity: 12,
-    status: 'Low Stock',
-    updated: '2025-01-09',
-    price: 149.99
-  },
-  {
-    id: '3',
-    name: 'Desk Chair',
-    category: 'Furniture',
-    quantity: 0,
-    status: 'Out of Stock',
-    updated: '2025-01-08',
-    price: 299.99
-  },
-  {
-    id: '4',
-    name: 'Laptop Stand',
-    category: 'Electronics',
-    quantity: 78,
-    status: 'In Stock',
-    updated: '2025-01-12',
-    price: 35.99
-  },
-  {
-    id: '5',
-    name: 'Water Bottle',
-    category: 'Accessories',
-    quantity: 156,
-    status: 'In Stock',
-    updated: '2025-01-11',
-    price: 24.99
-  },
-  {
-    id: '6',
-    name: 'Smartphone Case',
-    category: 'Electronics',
-    quantity: 8,
-    status: 'Low Stock',
-    updated: '2025-01-07',
-    price: 19.99
-  },
-  {
-    id: '7',
-    name: 'Desk Lamp',
-    category: 'Furniture',
-    quantity: 23,
-    status: 'In Stock',
-    updated: '2025-01-13',
-    price: 75.99
-  },
-  {
-    id: '8',
-    name: 'Bluetooth Speaker',
-    category: 'Electronics',
-    quantity: 34,
-    status: 'In Stock',
-    updated: '2025-01-06',
-    price: 129.99
-  },
-  {
-    id: '9',
-    name: 'Office Mug',
-    category: 'Accessories',
-    quantity: 5,
-    status: 'Low Stock',
-    updated: '2025-01-05',
-    price: 12.99
-  },
-  {
-    id: '10',
-    name: 'Keyboard',
-    category: 'Electronics',
-    quantity: 67,
-    status: 'In Stock',
-    updated: '2025-01-14',
-    price: 79.99
-  }
-];
+// export const inventoryData: InventoryItem[] = [
+//   {
+//     id: '1',
+//     name: 'Wireless Headphones',
+//     category: 'Electronics',
+//     quantity: 45,
+//     status: 'In Stock',
+//     updated: '2025-01-10',
+//     price: 89.99
+//   },
+//   {
+//     id: '2',
+//     name: 'Coffee Maker',
+//     category: 'Appliances',
+//     quantity: 12,
+//     status: 'Low Stock',
+//     updated: '2025-01-09',
+//     price: 149.99
+//   },
+
+// ];
 
 export default function InventoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -124,25 +56,32 @@ export default function InventoryTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
+ const dispatch = useDispatch<AppDispatch>();
+  const { items, loading, error } = useSelector((s: RootState) => s.product);
 
+  useEffect(() => {
+    dispatch(fetchInventory()); 
+  }, [dispatch]);
+
+
+  // ✅ categories now come from Redux items
   const categories = useMemo(() => {
-    const cats = [...new Set(inventoryData.map(item => item.category))];
-    return ['All', ...cats];
-  }, []);
-
+  const cats = [...new Set(items.map((item) => item.category))];
+  return ["All", ...cats];
+}, [items]);
   const statuses = ['All', 'In Stock', 'Low Stock', 'Out of Stock'];
     const router = useRouter();
 
   const filteredData = useMemo(() => {
-    return inventoryData.filter(item => {
+    return items.filter(item => {
       const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           item.category.toLowerCase().includes(searchTerm.toLowerCase());
+      item.category.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = filterCategory === 'All' || item.category === filterCategory;
       const matchesStatus = filterStatus === 'All' || item.status === filterStatus;
       
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [searchTerm, filterCategory, filterStatus]);
+  }, [items,searchTerm, filterCategory, filterStatus]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -210,6 +149,11 @@ const closeModal = () => {
   setSelectedItem(null);
 };
   
+if (loading) 
+  return (
+   <p>Loadingggg</p>)
+if (error) 
+  return <p className='text-red-500 text-sm'>Error</p>
   return (
     
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">
@@ -225,13 +169,13 @@ const closeModal = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <button
+          {/* <button
             className="flex items-center border gap-2 cursor-pointer bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
             onClick={() => exportToExcel(inventoryData)}
           >
             <Download className="w-4 h-4" />
             Export
-          </button>
+          </button> */}
           <button
             onClick={() => router.push('/add-product')}
             className="flex items-center gap-2 bg-purple-200 cursor-pointer text-black hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors font-medium"
@@ -330,13 +274,18 @@ const closeModal = () => {
                     />
                     <ActionButton
                     icon={Edit}
-                    onClick={() => openModal('edit', item)}
+                    onClick={()=>{
+                      openModal('edit', item)
+                      dispatch(updateInventoryItem(item))
+                    }}
                     className="hover:bg-green-100 hover:text-green-600 cursor-pointer"
                     title="Edit Item"
                     />
                     <ActionButton
                     icon={Trash2}
-                    onClick={() => openModal('delete', item)}
+                    onClick={()=>{
+                      openModal('delete', item)
+                    }}
                     className="hover:bg-red-100 hover:text-red-600 cursor-pointer"
                     title="Delete Item"
                      />
@@ -486,6 +435,9 @@ const closeModal = () => {
         <input type="number" defaultValue={selectedItem.price} className="w-full border px-3 py-1.5 rounded" />
       </div>
       <button
+      onClick={()=>{
+         dispatch(updateInventoryItem(selectedItem))
+      }}
         type="submit"
         className="bg-blue-600 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
       >
@@ -507,6 +459,7 @@ const closeModal = () => {
         <button
           onClick={() => {
             console.log('Deleted:', selectedItem.id);
+             dispatch(deleteInventoryItem(selectedItem.id))
             closeModal();
           }}
           className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"

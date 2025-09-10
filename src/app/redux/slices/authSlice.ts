@@ -66,16 +66,27 @@ export const registerUser = createAsyncThunk<
 export const fetchMe = createAsyncThunk<
   User,
   void,
-  { rejectValue: string; state: { auth: AuthState } }
->('auth/fetchMe', async (_, { rejectWithValue }) => {
+  { rejectValue: string }
+>("auth/fetchMe", async (_, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get('/auth/me');
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // no token → just skip (not an error)
+      return rejectWithValue("No token");
+    }
+
+    const { data } = await axios.get("/auth/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
     return data.user as User;
   } catch (err: any) {
-    const msg = err?.response?.data?.message || 'Failed to fetch profile';
+    const msg =
+      err?.response?.data?.message || err?.message || "Failed to fetch profile";
     return rejectWithValue(msg);
   }
-})
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -93,6 +104,10 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.status = 'idle';
       state.error = null;
+
+      if (typeof window !== "undefined"){
+        localStorage.removeItem('token')
+      }
     },
     registerUser: (state, action: PayloadAction<{ user: User; token: string }>) => {
       state.user = action.payload.user;
@@ -116,6 +131,11 @@ const authSlice = createSlice({
         state.user = action.payload.user;         
         state.isAuthenticated = true;   
         state.token = action.payload.token   ; 
+
+        // to save token to local storage
+        if(typeof window !== "undefined"){
+          localStorage.setItem('token', action.payload.token)
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -134,7 +154,18 @@ const authSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = (action.payload as string) || 'Failed to fetch user';
-      });
+      })
+     .addCase(fetchMe.rejected, (state, action) => {
+  state.status = "failed";
+  state.error = action.payload as string;
+
+  // only clear state if the token was invalid
+  if (action.payload === "Unauthorized") {
+    state.isAuthenticated = false;
+    state.user = null;
+    state.token = null;
+  }
+})
   },
 });
 
