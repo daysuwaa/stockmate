@@ -1,24 +1,37 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';
-import { verifyToken } from '../_utils';
+import { NextResponse } from "next/server";
+import { prisma } from "../../../lib/prisma";
+import jwt from "jsonwebtoken";
 
 export async function GET(req: Request) {
-  // 1) Read the Authorization header
-  const auth = req.headers.get('authorization'); // "Bearer <token>"
+  try {
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
-  // 2) Verify the token → gives us userId or null
-  const userId = verifyToken(auth);
-  if (!userId) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    const token = authHeader.split(" ")[1];
+    const secret = process.env.JWT_SECRET;
+    if (!secret) throw new Error("JWT_SECRET not set");
+
+    // decode token
+    const decoded = jwt.verify(token, secret) as { sub: string };
+
+    // notice we use decoded.sub here 👇
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.sub },
+      select: { id: true, name: true, email: true },
+    });
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ user }, { status: 200 });
+  } catch (e: any) {
+    console.error("ME ERROR:", e);
+    return NextResponse.json(
+      { message: e?.message || "Unauthorized" },
+      { status: 401 }
+    );
   }
-
-  // 3) Look up user in DB
-  const u = await prisma.user.findUnique({ where: { id: userId } });
-  if (!u) {
-    return NextResponse.json({ message: 'User not found' }, { status: 404 });
-  }
-
-  // 4) Return safe user object
-  const user = { id: u.id, name: u.name, email: u.email };
-  return NextResponse.json({ user }, { status: 200 });
 }

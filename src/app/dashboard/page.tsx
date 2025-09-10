@@ -5,8 +5,8 @@ import Header from './Header'
 import Stats from './Stats'
 import InventoryTable from './InventoryTable'
 import LowStock from './LowStock'
-import AddProduct from './AddProduct'
-import RecentLogs from './RecentLogs'
+// import AddProduct from './AddProduct'
+// import RecentLogs from './RecentLogs'
 import RequireAuth from '../components/RequireAuth'
 
 const page = () => {
@@ -19,10 +19,10 @@ const page = () => {
       <Stats/>
       <InventoryTable/>
       <LowStock/>
-      <div className='grid lg:grid-cols-2 mx-6 gap-6'>
+      {/* <div className='grid lg:grid-cols-2 mx-6 gap-6'>
       <AddProduct/>
       <RecentLogs/>
-      </div>
+      </div> */}
       
       </div>
       </RequireAuth>

@@ -1,5 +1,5 @@
 "use client"
-import { Package, TrendingUp, AlertTriangle, CircleAlert } from 'lucide-react';
+import { Package, TrendingUp, AlertTriangle, CircleAlert, DollarSign } from 'lucide-react';
 import React, { ReactNode , useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store"; 
@@ -65,45 +65,67 @@ const Stats = () => {
             </div>
         );
     };
-    const dispatch = useDispatch<AppDispatch>();
-const stats = useSelector((s: RootState) => s.product.stats);
 
-useEffect(() => {
-  dispatch(fetchInventoryStats());
-}, [dispatch]);
+    const dispatch = useDispatch<AppDispatch>();
+    const stats = useSelector((s: RootState) => s.product.stats);
+
+    useEffect(() => {
+        dispatch(fetchInventoryStats());
+    }, [dispatch]);
+
+    // Format currency value
+    const formatCurrency = (value: number) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(value);
+    };
 
     return (
         <div>
-        <div className='grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-6 p-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 p-6'>
 
-<StatsCard
-  icon={<Package className="w-6 h-6 text-blue-600" />}
-  label="Items in Stock"
-  iconBg="bg-blue-100"
-  value={stats?.totalItems.toString() ?? "0"}
-  gradient="bg-gradient-to-br from-blue-50 to-blue-100"
-  description="Active inventory across all warehouses"
-/>
+                <StatsCard
+                    icon={<Package className="w-6 h-6 text-blue-600" />}
+                    label="Items in Stock"
+                    iconBg="bg-blue-100"
+                    value={stats?.totalItems.toString() ?? "0"}
+                    gradient="bg-gradient-to-br from-blue-50 to-blue-100"
+                    description="Active inventory across all warehouses"
+                />
 
-<StatsCard
-  icon={<AlertTriangle className="w-6 h-6 text-amber-600" />}
-  label="Low Stock Alert"
-  iconBg="bg-amber-100"
-  value={stats?.lowStock.toString() ?? "0"}
-  gradient="bg-gradient-to-br from-amber-50 to-amber-100"
-  description="Items requiring immediate restocking"
-/>
+                <StatsCard
+                    icon={<DollarSign className="w-6 h-6 text-green-600" />}
+                    label="Total Inventory Value"
+                    iconBg="bg-green-100"
+                    value={formatCurrency(stats?.totalInventoryValue ?? 0)}
+                    gradient="bg-gradient-to-br from-green-50 to-green-100"
+                    description="Current worth of all stock items"
+                    trend="up"
+                    trendValue="+5.2%"
+                />
 
-<StatsCard
-  icon={<CircleAlert className="w-6 h-6 text-red-600" />}
-  label="Out of Stock"
-  iconBg="bg-red-100"
-  value={`${stats?.outOfStock.toLocaleString() ?? "0"}`}
-  gradient="bg-gradient-to-br from-red-100 to-red-200"
-  description="Monthly sales performance"
-/>
-            
-        </div>
+                <StatsCard
+                    icon={<AlertTriangle className="w-6 h-6 text-amber-600" />}
+                    label="Low Stock Alert"
+                    iconBg="bg-amber-100"
+                    value={stats?.lowStock.toString() ?? "0"}
+                    gradient="bg-gradient-to-br from-amber-50 to-amber-100"
+                    description="Items requiring immediate restocking"
+                />
+
+                <StatsCard
+                    icon={<CircleAlert className="w-6 h-6 text-red-600" />}
+                    label="Out of Stock"
+                    iconBg="bg-red-100"
+                    value={`${stats?.outOfStock.toLocaleString() ?? "0"}`}
+                    gradient="bg-gradient-to-br from-red-100 to-red-200"
+                    description="Items currently unavailable"
+                />
+                
+            </div>
         </div>
     );
 };

@@ -86,25 +86,7 @@ const filteredData = useMemo(() => {
     }
   };
 
-  // const ActionButton = ({
-  //   icon: Icon,
-  //   onClick,
-  //   className = "",
-  //   title,
-  // }: {
-  //   icon: React.ElementType;
-  //   onClick: () => void;
-  //   className?: string;
-  //   title: string;
-  // }) => (
-  //   <button
-  //     onClick={onClick}
-  //     className={`p-2 rounded-lg transition-colors duration-200 ${className}`}
-  //     title={title}
-  //   >
-  //     <Icon className="w-4 h-4" />
-  //   </button>
-  // );
+
 if (loading) return <p className="p-4 text-xl">Loading...</p>;
 if (error) return <p className="p-4 text-red-600">{error}</p>;
   return (
@@ -210,28 +192,7 @@ if (error) return <p className="p-4 text-red-600">{error}</p>;
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                   {formatDate(item.updated)}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <div className="flex justify-center gap-1">
-                    <ActionButton
-                      icon={Eye}
-                      onClick={() => console.log("View", item.id)}
-                      className="hover:bg-blue-100 hover:text-blue-600"
-                      title="View Details"
-                    />
-                    <ActionButton
-                      icon={Edit}
-                      onClick={() => console.log("Edit", item.id)}
-                      className="hover:bg-green-100 hover:text-green-600"
-                      title="Edit Item"
-                    />
-                    <ActionButton
-                      icon={Trash2}
-                      onClick={() => dispatch(deleteInventoryItem(item.id))}
-                      className="hover:bg-red-100 hover:text-red-600"
-                      title="Delete Item"
-                    />
-                  </div>
-                </td> */}
+              
               </tr>
             ))}
           </tbody>

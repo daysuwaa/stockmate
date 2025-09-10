@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { addInventoryItem } from "@/app/redux/slices/inventorySlice";
+import { AppDispatch } from "@/app/redux/store/store";
+import toast from "react-hot-toast"; // 👈 import
 
 type StatusType = 'In Stock' | 'Low Stock' | 'Out of Stock';
 
@@ -9,6 +14,7 @@ interface NewProduct {
   category: string;
   quantity: number;
   status: StatusType;
+  price: number;
 }
 
 const AddProduct = () => {
@@ -17,28 +23,64 @@ const AddProduct = () => {
     category: '',
     quantity: 0,
     status: 'In Stock',
+    price: 0,
   });
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setProduct((prev) => ({
+    setProduct(prev => ({
       ...prev,
-      [name]: name === 'quantity' ? Number(value) : value,
+      [name]: name === 'quantity' || name === 'price' ? Number(value) : value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(product); // Replace with API or context call
-    alert('Product added!');
-    setProduct({ name: '', category: '', quantity: 0, status: 'In Stock' });
+    try {
+      setSubmitting(true);
+      await dispatch(
+        addInventoryItem({
+          name: product.name,
+          category: product.category,
+          quantity: product.quantity,
+          status: product.status,
+          price: product.price,
+        })
+      ).unwrap();
+
+      setProduct({ name: '', category: '', quantity: 0, status: 'In Stock', price: 0 });
+      toast.success("✅ Product added successfully!");
+    } catch (err: any) {
+      toast.error(`❌ Failed to add product: ${err}`);
+      console.error("Add product failed:", err);
+    } finally {
+      setSubmitting(false);
+    }
   };
+  const categories = [
+    "Electronics",
+    "Clothing",
+    "Home & Garden",
+    "Sports & Outdoors",
+    "Books",
+    "Health & Beauty",
+    "Toys & Games",
+    "Automotive",
+    "Food & Beverages",
+    "Other",
+  ];
 
   return (
-    <div className=" p-6 rouded-lg bg-white  mb-6 rounded-lg shadow-lg   ">
+    <div className=" p-6 bg-white mb-6 rounded-lg shadow-lg">
       <h2 className="text-2xl text-left font-bold text-gray-800 mb-4">Quick Add Product</h2>
       <p className='text-[14px]'>Need more options? <span className='underline text-blue-500'><Link href="/add-product"> Full Product Form</Link></span></p>
       <form className="space-y-4 mx-auto justify-center mt-4" onSubmit={handleSubmit}>
+        {/* name */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Product Name</label>
           <input
@@ -51,20 +93,24 @@ const AddProduct = () => {
             required
           />
         </div>
-
+        {/* category */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Category</label>
-          <input
-            type="text"
-            name="category"
-            value={product.category}
-            onChange={handleChange}
-            placeholder="e.g. Hair"
-            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
-            required
-          />
+          <select
+              name="category"
+              value={product.category}
+              onChange={handleChange}
+              className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+            >
+              <option value="">Select a category</option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
         </div>
-
+        {/* quantity */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Quantity</label>
           <input
@@ -77,7 +123,21 @@ const AddProduct = () => {
             required
           />
         </div>
-
+        {/* price */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Price</label>
+          <input
+            type="number"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            min={0}
+            step="0.01"
+            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+            placeholder="0.00"
+          />
+        </div>
+        {/* status */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Status</label>
           <select
@@ -91,12 +151,12 @@ const AddProduct = () => {
             <option>Out of Stock</option>
           </select>
         </div>
-
         <button
           type="submit"
-          className="w-full bg-rose-400 hover:bg-rose-500 text-white text-sm py-2 rounded-md transition"
+          disabled={submitting}
+          className="w-full bg-rose-400 hover:bg-rose-500 text-white text-sm py-2 rounded-md transition disabled:opacity-60"
         >
-          Add Product
+          {submitting ? 'Adding…' : 'Add Product'}
         </button>
       </form>
     </div>

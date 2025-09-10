@@ -17,6 +17,7 @@ model User {
   updatedAt    DateTime @updatedAt
 }
 
+
 model Inventory {
   id        String   @id @default(cuid())
   name      String
@@ -26,5 +27,4 @@ model Inventory {
   price     Float
   updated   DateTime @default(now())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt  
 }

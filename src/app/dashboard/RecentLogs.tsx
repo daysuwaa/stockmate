@@ -1,48 +1,48 @@
-'use client';
-import React from 'react';
+"use client";
+import { DollarSign, Calendar, Package, AlertTriangle } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store/store";
 
-type RecentLogProps = {
-  status: '✔️ Updated' | '➕ Added' | '❌ Removed';
-  product: string;
-  timeAgo: string;
-};
+export default function RevenueSnapshot() {
+  const stats = useSelector((s: RootState) => s.product.stats);
 
-const LogItem: React.FC<RecentLogProps> = ({ status, product, timeAgo }) => {
   return (
-    <li className="text-sm text-gray-700 mb-5 flex justify-between items-start">
-      <div className="flex items-center gap-2">
-        <span>{status}</span>
-        <span>{status.split('️')[1]} <strong>{product}</strong></span>
+    <div className="p-6 mb-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Revenue Snapshot</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+        <StatCard
+          icon={<DollarSign className="w-6 h-6 text-green-500" />}
+          label="Today's Revenue"
+          value={`$${(stats?.todayRevenue || 0).toLocaleString()}`}
+        />
+        <StatCard
+          icon={<Calendar className="w-6 h-6 text-blue-500" />}
+          label="This Week"
+          value={`$${(stats?.weeklyRevenue || 0).toLocaleString()}`}
+        />
+        <StatCard
+          icon={<Package className="w-6 h-6 text-purple-500" />}
+          label="Inventory Value"
+          value={`$${(stats?.totalValue || 0).toLocaleString()}`}
+        />
+        <StatCard
+          icon={<AlertTriangle className="w-6 h-6 text-red-500" />}
+          label="Low Stock"
+          value={stats?.lowStock || 0}
+        />
       </div>
-      <span className="text-xs text-gray-400">{timeAgo}</span>
-    </li>
-  );
-};
-
-const RecentLogs: React.FC = () => {
-  const logs: RecentLogProps[] = [
-    { status: '➕ Added', product: 'Lace Wig', timeAgo: '5 mins ago' },
-    { status: '✔️ Updated', product: 'Curly Bundle', timeAgo: '20 mins ago' },
-    { status: '❌ Removed', product: 'Straight Wig', timeAgo: '1 hour ago' },
-     { status: '➕ Added', product: 'Lace Wig', timeAgo: '5 mins ago' },
-    { status: '❌ Removed', product: 'Straight Wig', timeAgo: '1 hour ago' },
-    { status: '✔️ Updated', product: 'Curly Bundle', timeAgo: '20 mins ago' },
-    { status: '❌ Removed', product: 'Straight Wig', timeAgo: '1 hour ago' },
-    { status: '➕ Added', product: 'Lace Wig', timeAgo: '5 mins ago' },
-    
-   
-  ];
-
-  return (
-    <div className="bg-white rounded-lg shadow-sm p-6 mb-6 w-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Recent Activity</h2>
-      <ul className="space-y-3">
-        {logs.map((log, idx) => (
-          <LogItem key={idx} {...log} />
-        ))}
-      </ul>
     </div>
   );
-};
+}
 
-export default RecentLogs;
+function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
+  return (
+    <div className="flex items-center gap-4 p-8 border rounded-lg bg-gray-50">
+      {icon}
+      <div>
+        <p className="text-sm text-gray-500">{label}</p>
+        <p className="text-lg font-semibold">{value}</p>
+      </div>
+    </div>
+  );
+}
