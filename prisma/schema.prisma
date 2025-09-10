@@ -1,13 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "sqlite"  
   url      = env("DATABASE_URL")
 }
 
@@ -18,4 +15,16 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  quantity  Int
+  status    String
+  price     Float
+  updated   DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt  
 }
