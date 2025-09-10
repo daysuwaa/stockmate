@@ -48,7 +48,7 @@ const Hero = () => {
           <div className="mt-6 flex gap-4 justify-center">
            <div className="mt-6 flex gap-4 justify-center">
   <button
-    onClick={() => router.push("/auth/signup")}
+    onClick={() => router.push("/auth/register")}
     className="bg-gray-900 text-white px-6 py-3 rounded hover:bg-green-600 text-sm flex items-center gap-2"
   >
     Get Started <ArrowRight size={16} />

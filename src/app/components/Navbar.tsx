@@ -32,7 +32,7 @@ const Navbar = () => {
           Login
         </button>
         <button
-          onClick={() => router.push('/auth/signup')}
+          onClick={() => router.push('/auth/register')}
           className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-green-700 text-sm cursor-pointer"
         >
           Sign Up
