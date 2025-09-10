@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../services/axios";
 type User = {
   id: string;
   name: string;
@@ -24,68 +25,17 @@ const initialState: AuthState = {
 };
 
 // ---------Thunks ----------------------
-// 3) FETCH ME (when you already have a token)
-// export const fetchMe = createAsyncThunk<
-//   User,
-//   void,
-//   { rejectValue: string; state: { auth: AuthState } }
-// >('auth/fetchMe', async (_, { rejectWithValue }) => {
-//   try {
-//     const { data } = await axios.get('/auth/me');
-//     return data.user as User;
-//   } catch (err: any) {
-//     const msg = err?.response?.data?.message || 'Failed to fetch profile';
-//     return rejectWithValue(msg);
-//   }
-// })
 
 // login thunk
-// export const loginUser = createAsyncThunk<
-//   { user: User; token: string },                 // success payload
-//   { email: string; password: string },           // input arg
-//   { rejectValue: string }                        // error payload
-// >('auth/loginUser', async (body, { rejectWithValue }) => {
-//   try {
-//     // Call your backend: expects { user, token }
-//     const res = await axios.post('/auth/login', body);
-//     return res.data as { user: User; token: string };
-//   } catch (err: unknown) {
-//     // Turn any error into a friendly string for UI
-//     let msg = 'Login failed';
-//     if (typeof err === 'object' && err !== null) {
-//       const e = err as { response?: { data?: { message?: string } }; message?: string };
-//       msg = e?.response?.data?.message ?? e?.message ?? msg;
-//     }
-//     return rejectWithValue(msg);
-//   }
-// });
-
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async ({ email, password }: { email: string; password: string }) => {
-  // instead of calling axios, just return dummy data after a delay
-  await new Promise(res => setTimeout(res, 800)); // simulate loading
-
-  if (email === "adesuwa@example.com" && password === "secret") {
-  return {
-  user: { id: "1", name: "susu", email },
-  token: "fake-token-123",
-  };
-  }
-
-  // if wrong details
-  throw new Error("Invalid credentials");
-  }
-);
-// register thunk
-export const registerUser = createAsyncThunk<
-  { user: User; token: string },
-  { name: string; email: string; password: string },
-  { rejectValue: string }
->('auth/registerUser', async (body, { rejectWithValue }) => {
+export const loginUser = createAsyncThunk<
+  { user: User; token: string },                 // success payload
+  { email: string; password: string },           // input arg
+  { rejectValue: string }                        // error payload
+>('auth/loginUser', async (body, { rejectWithValue }) => {
   try {
-    const { data } = await axios.post('/auth/register', body);
-    return data;
+    // Call your backend: expects { user, token }
+    const res = await axios.post('/auth/login', body);
+    return res.data as { user: User; token: string };
   } catch (err: unknown) {
     // Turn any error into a friendly string for UI
     let msg = 'Login failed';
@@ -97,6 +47,35 @@ export const registerUser = createAsyncThunk<
   }
 });
 
+// register thunk
+export const registerUser = createAsyncThunk<
+  { user: User; token: string },
+  { name: string; email: string; password: string },
+  { rejectValue: string }
+>('auth/registerUser', async (body, { rejectWithValue }) => {
+  try {
+    const { data } = await axios.post('/auth/register', body);
+    return data;   // 👈 must return { user, token } from backend
+  } catch (err: any) {
+    const msg = err?.response?.data?.message ?? err?.message ?? 'Registration failed';
+    return rejectWithValue(msg);
+  }
+});
+
+// 3) FETCH ME (when you already have a token)
+export const fetchMe = createAsyncThunk<
+  User,
+  void,
+  { rejectValue: string; state: { auth: AuthState } }
+>('auth/fetchMe', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await axios.get('/auth/me');
+    return data.user as User;
+  } catch (err: any) {
+    const msg = err?.response?.data?.message || 'Failed to fetch profile';
+    return rejectWithValue(msg);
+  }
+})
 const authSlice = createSlice({
   name: "auth",
   initialState,
