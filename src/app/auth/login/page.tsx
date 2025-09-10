@@ -1,11 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, } from '@/app/redux/slices/authSlice';
 import { Eye, EyeOff } from 'lucide-react';
 import { AppDispatch } from '@/app/redux/store/store';
 import { RootState } from '@/app/redux/store/store';
+import {toast} from "react-hot-toast"
 
 
 const Login = () => {
@@ -32,6 +33,19 @@ const Login = () => {
     }
   }
   const isFormFilled = email.trim() !== '' && password.trim() !== '';
+
+  // toaster
+   useEffect(() => {
+  const toastId = "auth-toast"; 
+
+  if (status === "loading") {
+    toast.loading("Logging user in...", { id: toastId });
+  } else if (status === "succeeded") {
+    toast.success("User Logged In Successfully", { id: toastId });
+  } else if (status === "failed" && error) {
+    toast.error(error, { id: toastId });
+  }
+}, [status, error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -65,11 +79,10 @@ const Login = () => {
             onClick={toggleVisibility} 
             className="absolute right-3 top-[30px]"
           >
-            {status === 'loading' ? 'Loggin in...' : ''}
            {showPassword ? <EyeOff/> : <Eye/>}
           </button>
         </div>
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+     
         <button
           type="submit"
           disabled={!isFormFilled}
@@ -83,7 +96,7 @@ const Login = () => {
         </button>
         <p>
           Don’t have an account?{" "}
-          <a href="/auth/signup">
+          <a href="/auth/register">
             <span className="text-blue-700 underline cursor-pointer">Sign up</span>
           </a>
         </p>
