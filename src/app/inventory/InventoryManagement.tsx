@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchInventory, deleteInventoryItem , updateInventoryItem} from "../redux/slices/inventorySlice";
 import { AppDispatch, RootState } from "../redux/store/store"; 
+import { formatCurrency } from "../utils/formatCurrency"
 import Modal from './Modal';
 import { 
   ChevronLeft, 
@@ -15,8 +16,8 @@ import {
 } from 'lucide-react';
 import {  Download, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-// import { inventoryData } from './inventorydata'; 
-// import {exportToExcel} from "./Export"
+import { inventoryData } from './inventorydata'; 
+import {exportToExcel} from "./Export"
 
 interface InventoryItem {
   id: string;
@@ -28,27 +29,6 @@ interface InventoryItem {
   price: number;
 }
 
-// export const inventoryData: InventoryItem[] = [
-//   {
-//     id: '1',
-//     name: 'Wireless Headphones',
-//     category: 'Electronics',
-//     quantity: 45,
-//     status: 'In Stock',
-//     updated: '2025-01-10',
-//     price: 89.99
-//   },
-//   {
-//     id: '2',
-//     name: 'Coffee Maker',
-//     category: 'Appliances',
-//     quantity: 12,
-//     status: 'Low Stock',
-//     updated: '2025-01-09',
-//     price: 149.99
-//   },
-
-// ];
 
 export default function InventoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +36,7 @@ export default function InventoryTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
+  const { currency } = useSelector((s: RootState) => s.settings.preferences);
  const dispatch = useDispatch<AppDispatch>();
   const { items, loading, error } = useSelector((s: RootState) => s.product);
 
@@ -109,12 +90,12 @@ export default function InventoryTable() {
     });
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
+  // const formatPrice = (price: number) => {
+  //   return new Intl.NumberFormat('en-US', {
+  //     style: 'currency',
+  //     currency: 'USD'
+  //   }).format(price);
+  // };
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -169,13 +150,13 @@ if (error)
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          {/* <button
+          <button
             className="flex items-center border gap-2 cursor-pointer bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors"
-            onClick={() => exportToExcel(inventoryData)}
+            onClick={() => exportToExcel(items)}
           >
             <Download className="w-4 h-4" />
             Export
-          </button> */}
+          </button>
           <button
             onClick={() => router.push('/add-product')}
             className="flex items-center gap-2 bg-purple-200 cursor-pointer text-black hover:bg-gray-100 px-4 py-2 rounded-lg transition-colors font-medium"
@@ -259,7 +240,7 @@ if (error)
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                  {formatPrice(item.price)}
+                  {formatCurrency(item.price, currency)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                   {formatDate(item.updated)}

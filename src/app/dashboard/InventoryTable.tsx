@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchInventory } from "../redux/slices/inventorySlice";
 import { AppDispatch, RootState } from "../redux/store/store"; 
+import { formatCurrency } from "../utils/formatCurrency"
 import {
   ChevronLeft,
   ChevronRight,
@@ -12,11 +13,12 @@ import Link from "next/link";
 
 export default function InventoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
   const dispatch = useDispatch<AppDispatch>();
+  const { currency } = useSelector((s: RootState) => s.settings.preferences);
   const { items, loading, error } = useSelector((s: RootState) => s.product);
 
   useEffect(() => {
@@ -73,12 +75,12 @@ const filteredData = useMemo(() => {
     });
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
+  // const formatCurrency = (price: , currencynumber) => {
+  //   return new Intl.NumberFormat("en-US", {
+  //     style: "currency",
+  //     currency: "USD",
+  //   }).format(price);
+  // };
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -187,7 +189,7 @@ if (error) return <p className="p-4 text-red-600">{error}</p>;
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
-                  {formatPrice(item.price)}
+                  {formatCurrency(item.price, currency)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                   {formatDate(item.updated)}
@@ -213,8 +215,6 @@ if (error) return <p className="p-4 text-red-600">{error}</p>;
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
           </select>
           <span className="text-sm text-gray-700">
             of {filteredData.length} items
