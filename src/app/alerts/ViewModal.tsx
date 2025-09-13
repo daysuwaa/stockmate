@@ -4,10 +4,9 @@ import React from "react";
 type Item = {
   id: number;
   name: string;
-  sku: string;
   category: string;
   quantity: number;
-  minStockLevel: number;
+  status: string;
 };
 
 type ViewModalProps = {
@@ -25,16 +24,20 @@ const ViewModal: React.FC<ViewModalProps> = ({ isOpen, onClose, item }) => {
         {/* <h1 className="text-xl font-semibold mb-3">Item Details</h1> */}
         <div className=" text-xl p-6 bg-red-500 flex items-center rounded-t-lg">
          <Tag/>
-        <p className="ml-2 font-semibold">{item.name}</p>
+         <div className="flex ml-4 flex-col">
+         <p className="font-semibold ">Product Name:</p>
+        <p className=" text-[14px] font-semibold ">{item.name.toUpperCase()}</p>
+        </div>
         </div>
        <div className="p-6">
         <h1 className="text-lg mb-3 font-semibold">Product Information</h1>
         {/* <hr></hr> */}
         <div className="my-3">
-        <p className="bg-gray-100 p-3 mb-3"><strong>SKU:</strong> {item.sku}</p>
+        {/* <p className="bg-gray-100 p-3 mb-3"><strong>SKU:</strong> {item.sku}</p> */}
+         <p className="bg-gray-100 p-3 mb-3"><strong>ID:</strong> {item.id}</p>
         <p className="bg-gray-100 p-3 mb-3"><strong>Category:</strong> {item.category}</p>
         <p className="bg-gray-100 p-3 mb-3"><strong>Quantity:</strong> {item.quantity}</p>
-        <p className="bg-gray-100 p-3"><strong>Minimum Stock Level:</strong> {item.minStockLevel}</p>
+        <strong className="bg-gray-100 p-3 mb-3 flex ">Status:<p className={`${item.status==='Low Stock' ? 'text-yellow-500' : 'text-red-500'} ml-1`}>{item.status}</p></strong>
        </div>
         <button
           onClick={onClose}

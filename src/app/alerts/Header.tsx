@@ -12,6 +12,9 @@ const Header = () => {
               <span className='mr-2'><AlertTriangle /></span>Stock Alert
             </h1>
             <p className="text-slate-500 mt-1">Keep track of internal notifications (low stock, out of stock).</p>
+             <p className="text-gray-600 mt-1">
+              Note:Items with 30 or fewer units in stock
+            </p>
           </div>
         </div>
         
