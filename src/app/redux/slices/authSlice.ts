@@ -6,6 +6,10 @@ type User = {
   name: string;
   email: string;
   avatar?: string| null;
+  phone: string,
+  address?:string
+  website?: string
+
 };
 
 type AuthState = {
@@ -50,7 +54,7 @@ export const loginUser = createAsyncThunk<
 // register thunk
 export const registerUser = createAsyncThunk<
   { user: User; token: string },
-  { name: string; email: string; password: string },
+  { name: string; email: string; password: string, phone:number, website?:string },
   { rejectValue: string }
 >('auth/registerUser', async (body, { rejectWithValue }) => {
   try {
@@ -87,6 +91,46 @@ export const fetchMe = createAsyncThunk<
   }
 });
 
+//  update user thunk
+// export const updateUserProfile = createAsyncThunk<
+//   User,
+//   Partial<User>,
+//   { rejectValue: string; state: { auth: AuthState } }
+// >("auth/updateUserProfile", async (updates, { getState, rejectWithValue }) => {
+//   try {
+//     const state = getState();
+//     const id = state.auth.user?.id;
+//     if (!id) throw new Error("Not logged in");
+
+//     const res = await axios.put(`/users/${id}`, updates);
+//     return res.data.user as User;
+//   } catch (err: any) {
+//     return rejectWithValue(err?.response?.data?.message || "Update failed");
+//   }
+// });
+export const updateUserProfile = createAsyncThunk<
+  User,
+  Partial<User>,
+  { rejectValue: string; state: { auth: AuthState } }
+>("auth/updateUserProfile", async (updates, { getState, rejectWithValue }) => {
+  try {
+    const { auth } = getState();
+    if (!auth.user) throw new Error("Not logged in");
+
+    const res = await axios.put(`/users/${auth.user.id}`, updates, {
+      headers: { Authorization: `Bearer ${auth.token}` },
+    });
+
+    return res.data.user as User;
+  } catch (err: any) {
+    return rejectWithValue(
+      err?.response?.data?.message ?? err.message ?? "Update failed"
+    );
+    
+  }
+  
+})
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -99,16 +143,14 @@ const authSlice = createSlice({
       state.status = 'succeeded';
     },
     logout: (state) => {
-      state.user = null;
+   state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      state.status = 'idle';
-      state.error = null;
+      state.status = "idle";
+      localStorage.removeItem("token");
+      localStorage.removeItem("auth-user");
+      },
 
-      if (typeof window !== "undefined"){
-        localStorage.removeItem('token')
-      }
-    },
     registerUser: (state, action: PayloadAction<{ user: User; token: string }>) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
@@ -126,17 +168,34 @@ const authSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload.user;         
-        state.isAuthenticated = true;   
-        state.token = action.payload.token   ; 
 
-        // to save token to local storage
-        if(typeof window !== "undefined"){
-          localStorage.setItem('token', action.payload.token)
-        }
+    .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+        state.status = "succeeded";
+        localStorage.setItem("token", action.payload.token);
+        localStorage.setItem("auth-user", JSON.stringify(action.payload.user));
       })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+        state.status = "succeeded";
+      })
+      .addCase(fetchMe.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.user = action.payload; 
+      // overwrite with new user
+      if (typeof window !== "undefined") {
+    localStorage.setItem("auth-user", JSON.stringify(action.payload));
+  }
+      })
+
+      
       .addCase(loginUser.rejected, (state, action) => {
         state.status = 'failed';
         state.error = (action.payload as string) || 'Failed to fetch user';
@@ -144,12 +203,6 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.status = 'loading';
         state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.user = action.payload.user;         
-        state.isAuthenticated = true;   
-        state.token = action.payload.token   ; 
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -169,5 +222,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateUser } = authSlice.actions;
 export default authSlice.reducer;
