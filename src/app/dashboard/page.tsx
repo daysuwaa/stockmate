@@ -6,10 +6,11 @@ import Stats from './Stats'
 import InventoryTable from './InventoryTable'
 import LowStock from './LowStock'
 // import AddProduct from './AddProduct'
-// import RecentLogs from './RecentLogs'
+import Piechart from './Piechart'
 import RequireAuth from '../components/RequireAuth'
 
 const page = () => {
+  
   return (
     <div className="flex h-screen">
       <RequireAuth>
@@ -18,11 +19,11 @@ const page = () => {
        <Header/>
       <Stats/>
       <InventoryTable/>
+      {/* <LowStock/> */}
+      <div className='grid lg:grid-cols-2 '>
       <LowStock/>
-      {/* <div className='grid lg:grid-cols-2 mx-6 gap-6'>
-      <AddProduct/>
-      <RecentLogs/>
-      </div> */}
+     <Piechart/>
+      </div>
       
       </div>
       </RequireAuth>

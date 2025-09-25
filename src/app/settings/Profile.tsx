@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store/store";
 import {  markProfileHydrated } from "../redux/slices/settingsSlice";
-import { updateUser, updateUserProfile } from "../redux/slices/authSlice"; 
+import {  updateUserProfile } from "../redux/slices/authSlice"; 
 import { toast } from "react-hot-toast";
 import { AppDispatch } from "@/app/redux/store/store";
 import { updateProfile } from "../redux/slices/settingsSlice";
@@ -22,22 +22,13 @@ const dispatch = useDispatch<AppDispatch>();
     profile.avatar || null
   );
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file && file.type.startsWith("image/")) {
-  //     const previewUrl = URL.createObjectURL(file);
-  //     setProfileImage(previewUrl);
-  //     dispatch(updateProfile({ avatar: previewUrl }));
-  //   }
-  // };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file || !file.type.startsWith("image/")) return;
 
   const reader = new FileReader();
   reader.onload = () => {
-    const dataUrl = reader.result as string; // base64 data URL
+    const dataUrl = reader.result as string; 
     setProfileImage(dataUrl);
     dispatch(updateProfile({ avatar: dataUrl }));
   };
@@ -48,24 +39,6 @@ const dispatch = useDispatch<AppDispatch>();
     fileInputRef.current?.click();
   };
   const [isSaving, setIsSaving] = useState(false);
-
-// const handleSave = (e: React.FormEvent) => {
-//   e.preventDefault();
-//   setIsSaving(true);
-
-//   // show a loading toast
-//   const toastId = toast.loading("Saving profile...");
-
-//   // simulate async save
-//   setTimeout(() => {
-//     dispatch(updateUser(profile));
-//     setIsSaving(false);
-
-//     // replace the loading toast with success
-//     toast.success("Profile updated successfully ✅", { id: toastId });
-//   }, 1000);
-// };
-
 
 
 const handleSave = async (e: React.FormEvent) => {
@@ -97,20 +70,6 @@ const handleSave = async (e: React.FormEvent) => {
   }
 };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch(
-  //       updateProfile({
-  //         name: user.name,
-  //         email: user.email,
-  //         avatar: user.avatar || null,
-  //         phone: user.phone,
-  //         website: user.website
-          
-  //       })
-  //     );
-  //   }
-  // }, [user, dispatch]);
 useEffect(() => {
   if (user && !profile.hydratedFromAuth) {
     dispatch(updateProfile({
@@ -124,12 +83,6 @@ useEffect(() => {
   }
 }, [user, profile.hydratedFromAuth, dispatch]);
 
-
-//   useEffect(() => {
-//   if (user) {
-//     dispatch(updateProfile({ ...user }));
-//   }
-// }, [user, dispatch]);
 
 
 
@@ -218,16 +171,6 @@ useEffect(() => {
             />
           </div>
         </div>
-
-        {/* <label>Business Address</label>
-        <textarea
-          rows={4}
-          placeholder="32 Hair Street, Off...."
-          value={profile.address || ""}
-          onChange={(e) => dispatch(updateProfile({ address: e.target.value }))}
-          className="w-full px-4 py-3 my-4 border border-gray-400 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        /> */}
-
        <button type="submit" className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-md">
           {isSaving ? "Saving..." : "Save Changes"}
       </button>

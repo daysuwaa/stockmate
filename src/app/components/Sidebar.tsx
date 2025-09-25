@@ -1,23 +1,34 @@
 "use client"
-import { Box, ClipboardList, Home, LogOut, Settings, Users, Menu, X, Plus } from 'lucide-react';
+import { Box, ClipboardList, Home, LogOut, Settings, Menu, X, Plus } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react'
 import { usePathname } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { toast } from 'react-hot-toast';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname()
+    const router = useRouter();
   
   const sidebarLinks = [
     { label: 'Dashboard', href: '/dashboard', icon: <Home size={20}/> },
     { label: 'Inventory', href: '/inventory', icon: <Box size={20}/> },
     { label: 'Stock Alerts', href: '/alerts', icon: <ClipboardList size={20}/> },
     { label: 'Add Products', href: '/add-product', icon: <Plus size={20}/> },
-    { label: 'Customers', href: '/customers', icon: <Users size={20}/> },
+    // { label: 'Customers', href: '/customers', icon: <Users size={20}/> },
     { label: 'Settings', href: '/settings', icon: <Settings size={20}/> },
   ];
   const isActive = (href: string) => pathname === href
+  const handleLogout = () => {
+    // 1. Clear auth tokens/session
+    localStorage.removeItem("authToken"); // if you're storing a token
+    sessionStorage.clear(); // optional
 
+    // 2. Redirect user
+    router.push("/auth/login");
+    toast.success('User logged out')
+  };
   return (
     <>
     <div className='mb-8 top-0 fixed lg:hidden '>
@@ -83,7 +94,7 @@ const Sidebar = () => {
 
       {/* Logout Button */}
       <div className='absolute bottom-6 left-6 right-6'>
-        <button className='flex items-center w-full px-4 py-3 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 group'>
+        <button onClick={handleLogout} className='flex items-center w-full px-4 py-3 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 group'>
           <LogOut size={20} className='mr-3 group-hover:scale-110 transition-transform duration-200'/>
           <span className='font-medium text-sm'>Logout</span>
         </button>

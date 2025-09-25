@@ -3,39 +3,30 @@
 import React, { useState } from "react";
 import {
   Package,
-  DollarSign,
-  Hash,
+  // DollarSign,
   FileText,
   Tag,
   Save,
   X,
-  AlertCircle,
+  // Box,
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { addInventoryItem } from "@/app/redux/slices/inventorySlice";
 import { AppDispatch } from "@/app/redux/store/store";
 import toast from "react-hot-toast";
+import { BiMoney } from "react-icons/bi";
 
 type StatusType = "In Stock" | "Low Stock" | "Out of Stock";
 
 const AddProducts = () => {
-  const [formData, setFormData] = useState({
-    productName: "",
-    category: "",
-    description: "",
-    price: "",
-    quantity: "",
-    sku: "",
-    supplier: "",
-    expiryDate: "",
-    status: "In Stock" as StatusType,
-    tags: "",
-    image: null as File | null,
-  });
+  const [productName, setProductName] = useState("");
+  const [category, setCategory] = useState("");
+  // const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [status, setStatus] = useState<StatusType>("In Stock");
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [, setSubmitSuccess] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -52,83 +43,35 @@ const AddProducts = () => {
     "Other",
   ];
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
-
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.productName.trim()) {
-      newErrors.productName = "Product name is required";
-    }
-    if (!formData.category) {
-      newErrors.category = "Category is required";
-    }
-    if (!formData.price || parseFloat(formData.price) <= 0) {
-      newErrors.price = "Valid price is required";
-    }
-    if (!formData.quantity || parseInt(formData.quantity) < 0) {
-      newErrors.quantity = "Valid quantity is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      toast.error("❌ Please fix the form errors first.");
+    if (!productName.trim() || !category.trim() || !price || !quantity) {
+      toast.error("❌ Please fill in all required fields");
       return;
     }
 
     try {
       setSubmitting(true);
-
       await dispatch(
         addInventoryItem({
-          name: formData.productName,
-          category: formData.category,
-          quantity: Number(formData.quantity),
-          status: formData.status,
-          price: Number(formData.price),
+          name: productName,
+          category,
+          quantity: Number(quantity),
+          status,
+          price: Number(price),
         })
       ).unwrap();
 
-      setSubmitSuccess(true);
       toast.success("✅ Product added successfully!");
 
-      setFormData({
-        productName: "",
-        category: "",
-        description: "",
-        price: "",
-        quantity: "",
-        sku: "",
-        supplier: "",
-        expiryDate: "",
-        status: "In Stock",
-        tags: "",
-        image: null,
-      });
+      // reset
+      setProductName("");
+      setCategory("");
+      // setDescription("");
+      setPrice("");
+      setQuantity("");
+      setStatus("In Stock");
     } catch (err: any) {
       toast.error(`❌ Failed to add product: ${err}`);
       console.error("Add product failed:", err);
@@ -138,80 +81,13 @@ const AddProducts = () => {
   };
 
   const handleReset = () => {
-    setFormData({
-      productName: "",
-      category: "",
-      description: "",
-      price: "",
-      quantity: "",
-      sku: "",
-      supplier: "",
-      expiryDate: "",
-      status: "In Stock",
-      tags: "",
-      image: null,
-    });
-    setErrors({});
+    setProductName("");
+    setCategory("");
+    // setDescription("");
+    setPrice("");
+    setQuantity("");
+    setStatus("In Stock");
   };
-
-  const InputField = ({
-    name,
-    label,
-    type = "text",
-    icon: Icon,
-    placeholder,
-    required = false,
-    min,
-    step,
-  }: {
-    name: string;
-    label: string;
-    type?: string;
-    icon: React.ElementType;
-    placeholder?: string;
-    required?: boolean;
-    min?: string;
-    step?: string;
-  }) => (
-    <div className="space-y-2">
-      <label
-        htmlFor={name}
-        className="flex items-center gap-2 text-sm font-medium text-gray-700"
-      >
-        <Icon className="w-4 h-4" />
-        {label}
-        {required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative">
-        <input
-          type={type}
-          id={name}
-          name={name}
-          value={(formData as any)[name]}
-          onChange={handleInputChange}
-          placeholder={placeholder}
-          min={min}
-          step={step}
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-            errors[name]
-              ? "border-red-500 bg-red-50"
-              : "border-gray-300 hover:border-gray-400"
-          }`}
-        />
-        {errors[name] && (
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <AlertCircle className="w-5 h-5 text-red-500" />
-          </div>
-        )}
-      </div>
-      {errors[name] && (
-        <p className="text-sm text-red-600 flex items-center gap-1">
-          <AlertCircle className="w-4 h-4" />
-          {errors[name]}
-        </p>
-      )}
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8 px-4">
@@ -225,32 +101,36 @@ const AddProducts = () => {
                 Basic Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField
-                  name="productName"
-                  label="Product Name"
-                  icon={Package}
-                  placeholder="Enter product name"
-                  required
-                />
-                <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    <Tag className="w-4 h-4" />
-                    Category <span className="text-red-500">*</span>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Package className="inline w-4 h-4 mr-1" />
+                    Product Name
+                  </label>
+                  <input
+                    type="text"
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                    placeholder="Enter product name"
+                    className="w-full px-4 py-3 border rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <Tag className="inline w-4 h-4 mr-1" />
+                    Category
                   </label>
                   <select
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                      errors.category
-                        ? "border-red-500 bg-red-50"
-                        : "border-gray-300 hover:border-gray-400"
-                    }`}
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full px-4 py-3 border rounded-lg"
+                    required
                   >
                     <option value="">Select a category</option>
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
                       </option>
                     ))}
                   </select>
@@ -259,38 +139,49 @@ const AddProducts = () => {
 
               {/* Pricing & Inventory */}
               <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-                <DollarSign className="w-5 h-5" />
+                <BiMoney className="w-5 h-5" />
                 Pricing & Inventory
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <InputField
-                  name="price"
-                  label="Price"
-                  type="number"
-                  icon={DollarSign}
-                  placeholder="0.00"
-                  required
-                  min="0"
-                  step="0.01"
-                />
-                <InputField
-                  name="quantity"
-                  label="Quantity"
-                  type="number"
-                  icon={Hash}
-                  placeholder="0"
-                  required
-                  min="0"
-                />
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="0.00"
+                    min="0"
+                    step="0.01"
+                    className="w-full px-4 py-3 border rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Quantity
+                  </label>
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    placeholder="0"
+                    min="0"
+                    className="w-full px-4 py-3 border rounded-lg"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Status
                   </label>
                   <select
-                    name="status"
-                    value={formData.status}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value as StatusType)}
+                    className="w-full px-4 py-3 border rounded-lg"
                   >
                     <option>In Stock</option>
                     <option>Low Stock</option>

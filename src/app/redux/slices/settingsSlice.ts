@@ -3,10 +3,12 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 type Profile = {
     name: string;
     email: string;
-    avatarUrl?: string| null;
-    phone: number;
+    avatar?: string| null;
+    phone: string;
     website?: string;
     address?: string;
+    hydratedFromAuth: boolean
+    isProfile:boolean
 }
 
 type Preferences = {
@@ -31,10 +33,12 @@ const initialState: SettingsState = {
     profile:{
     name:'',
     email: '',
-    avatarUrl: null,
-    phone: 0,
+    avatar: null,
+    phone: '',
     website: '',
     address: '',
+    hydratedFromAuth:false,
+    isProfile:false
  },
 
     preferences:{
@@ -60,6 +64,9 @@ const settingsSlice = createSlice({
             action: PayloadAction<Partial<Profile>>)=>{
             state.profile = {...state.profile, ...action.payload}
         },
+        markProfileHydrated: (state) => {
+        state.profile.hydratedFromAuth = true;
+        },
 
         updatePreferences: (
             state, 
@@ -73,5 +80,5 @@ const settingsSlice = createSlice({
         },
     }
 })
-export const {updateProfile, updatePreferences, updateSecurity} = settingsSlice.actions;
+export const { updatePreferences, updateProfile, updateSecurity, markProfileHydrated} = settingsSlice.actions;
 export default settingsSlice.reducer;
