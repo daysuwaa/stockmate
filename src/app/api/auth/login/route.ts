@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';
+// import { prisma } from '../../../lib/prisma';
+import { PrismaClient } from "@/generated/prisma"; 
+export const prisma = new PrismaClient();
 import { LoginSchema, comparePassword, signToken } from '../_utils';
 
 export async function POST(req: Request) {
@@ -30,7 +32,7 @@ export async function POST(req: Request) {
 
     // 4) Success: issue token, send safe user
     const token = signToken(u.id);
-    const user = { id: u.id, name: u.name, email: u.email };
+    const user = { id: u.id, name: u.name, email: u.email, phone:u.phone, website:u.website, avatar:u.avatar?? null };
 
     return NextResponse.json({ user, token }, { status: 200 });
   } catch (e: any) {

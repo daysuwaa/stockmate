@@ -3,10 +3,18 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 
 // 1) SCHEMAS: declare what a valid body looks like.
+
 export const RegisterSchema = z.object({
-  name: z.string().min(2, 'Name is too short'),
-  email: z.string().email('Invalid email'),
-  password: z.string().min(6, 'Min 6 characters'),
+  name: z.string().min(2, "Name is too short"),
+  email: z.string().regex(
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  "Invalid email"
+), 
+ phone: z
+  .string()
+  .regex(/^\d{11}$/, "Phone must be exactly 11 digits"),
+  website: z.string().trim().optional(),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const LoginSchema = z.object({

@@ -18,12 +18,14 @@ const SignUpPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [website, setWebsite] = useState('');
   const status = useSelector((state: RootState) => state.auth.status);
   const error = useSelector((state: RootState) => state.auth.error);
   
     const onSubmit = async(e:React.FormEvent) => {
       e.preventDefault();
-      const result = await dispatch(registerUser({name, email, password}));
+      const result = await dispatch(registerUser({name, email, password, phone, website}));
       console.log(result);
       if (registerUser.fulfilled.match(result)) {
         router.push('/dashboard');
@@ -42,12 +44,13 @@ const SignUpPage = () => {
    }, [status, error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <form onSubmit={onSubmit} className="bg-wite  rounded-md p-6 w-full max-w-md shdow-sm space-y-5">
+    <div className="min-h-screen flex items-center justify-center bg-pink-50 px-4">
+      <form onSubmit={onSubmit} className="bg-wite  rounded-md p-6 w-full max-w-xl bg-white shadow-gray-200 shadow-lg space-y-5">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Welcome to StockMate 😃</h2>
         <p className='text-center'>Kindly Sign up into your account</p>
 
-        <div className="flex flex-col">
+        <div className='flex gap-6'>
+        <div className="flex w-full flex-col">
           <label htmlFor="name" className="text-sm text-gray-700">Business Name</label>
           <input
             type="name"
@@ -57,13 +60,34 @@ const SignUpPage = () => {
             className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex w-full flex-col">
           <label htmlFor="email" className="text-sm text-gray-700">Email</label>
           <input
             type="email"
              value={email}
             placeholder="johndoe@email.com"
              onChange={(e)=> setEmail(e.target.value)}
+            className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
+          />
+        </div>
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="email" className="text-sm text-gray-700">Phone</label>
+          <input
+            type="text"
+             value={phone}
+            placeholder="+234 901 2346 789"
+             onChange={(e)=> setPhone(e.target.value)}
+            className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="email" className="text-sm text-gray-700">Website</label>
+          <input
+            type="text"
+             value={website}
+            placeholder="www.stockmate.co"
+             onChange={(e)=> setWebsite(e.target.value)}
             className="border border-gray-300 px-3 py-2 rounded-sm mt-1 text-sm placeholder:text-[13px]"
           />
         </div>

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, } from '@/app/redux/slices/authSlice';
@@ -22,7 +22,7 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const status = useSelector((state: RootState) => state.auth.status);
-  const error = useSelector((state: RootState) => state.auth.error);
+  // const error = useSelector((state: RootState) => state.auth.error);
 
   const onSubmit = async(e:React.FormEvent) => {
     e.preventDefault();
@@ -30,22 +30,30 @@ const Login = () => {
     console.log(result);
     if (loginUser.fulfilled.match(result)) {
       router.push('/dashboard');
+     toast.success('Logged in successfully :)', {id:"toastid-sucess"})
     }
+    if(loginUser.rejected.match(result)){
+      toast.error('Inavlid Details, try again')
+    }
+    if(loginUser.pending.match(result)){
+      toast.loading('loading..');
+    }
+   
   }
   const isFormFilled = email.trim() !== '' && password.trim() !== '';
 
-  // toaster
-   useEffect(() => {
-  const toastId = "auth-toast"; 
+//   // toaster
+//    useEffect(() => {
+//   const toastId = "auth-toast"; 
 
-  if (status === "loading") {
-    toast.loading("Logging user in...", { id: toastId });
-  } else if (status === "succeeded") {
-    toast.success("User Logged In Successfully", { id: toastId });
-  } else if (status === "failed" && error) {
-    toast.error(error, { id: toastId });
-  }
-}, [status, error]);
+//   if (status === "loading") {
+//     toast.loading("Logging user in...", { id: toastId });
+//   } else if (status === "succeeded") {
+//     toast.success("User Logged In Successfully", { id: toastId });
+//   } else if (status === "failed" && error) {
+//     toast.error(error, { id: toastId });
+//   }
+// }, [status, error]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
