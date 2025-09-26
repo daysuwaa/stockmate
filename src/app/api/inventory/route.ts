@@ -17,6 +17,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const { name, category, quantity, status, price } = body;
+    console.log("📥 Received body:", body); // Debug log
 
     if (!name || !category) {
       return NextResponse.json({ message: "Name and category are required" }, { status: 400 });
