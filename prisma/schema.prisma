@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
 
 
@@ -9,16 +10,18 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  name          String
-  email         String   @unique
-  phone         String   @unique
-  website       String?
-  avatar        String?
-  address       String? 
-  passwordHash  String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  phone        String?     @unique
+  website      String?
+  avatar       String?
+  address      String?
+  passwordHash String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  inventory    Inventory[]
 }
 
 model Inventory {
@@ -28,6 +31,8 @@ model Inventory {
   quantity  Int
   status    String
   price     Float
-  updated   DateTime @default(now())
+  updated   DateTime @updatedAt
   createdAt DateTime @default(now())
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
 }

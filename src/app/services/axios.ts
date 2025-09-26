@@ -1,8 +1,10 @@
 import Axios from 'axios';
 
 const axios = Axios.create({
-  baseURL:  '/api',
-  // So axios.post('/auth/login') -> http://localhost:4000/api/auth/login
+  baseURL: "/api", // so axios.get("/auth/me") -> /api/auth/me
+  headers: {
+    "Content-Type": "application/json",
+  }
 });
 
 export default axios;

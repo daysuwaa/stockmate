@@ -91,23 +91,6 @@ export const fetchMe = createAsyncThunk<
   }
 });
 
-//  update user thunk
-// export const updateUserProfile = createAsyncThunk<
-//   User,
-//   Partial<User>,
-//   { rejectValue: string; state: { auth: AuthState } }
-// >("auth/updateUserProfile", async (updates, { getState, rejectWithValue }) => {
-//   try {
-//     const state = getState();
-//     const id = state.auth.user?.id;
-//     if (!id) throw new Error("Not logged in");
-
-//     const res = await axios.put(`/users/${id}`, updates);
-//     return res.data.user as User;
-//   } catch (err: any) {
-//     return rejectWithValue(err?.response?.data?.message || "Update failed");
-//   }
-// });
 export const updateUserProfile = createAsyncThunk<
   User,
   Partial<User>,
@@ -208,11 +191,10 @@ const authSlice = createSlice({
         state.status = 'failed';
         state.error = (action.payload as string) || 'Failed to fetch user';
       })
-     .addCase(fetchMe.rejected, (state, action) => {
+    .addCase(fetchMe.rejected, (state, action) => {
+  console.error("❌ fetchMe failed:", action.payload);
   state.status = "failed";
   state.error = action.payload as string;
-
-  // only clear state if the token was invalid
   if (action.payload === "Unauthorized") {
     state.isAuthenticated = false;
     state.user = null;

@@ -61,35 +61,47 @@ const calculateStatsFromItems = (items: Inventory[]) => {
   };
 };
 
-// 4) Thunks (async API calls)
 
-// GET all
-export const fetchInventory = createAsyncThunk<
-  Inventory[],
-  void,
-  { rejectValue: string }
->("inventory/fetchAll", async (_, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.get("/inventory");
-    return data as Inventory[];
-  } catch (err: any) {
-    return rejectWithValue(err?.response?.data?.message || "Failed to fetch inventory");
-  }
-});
+export const fetchInventory = createAsyncThunk(
+  "inventory/fetchInventory",
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const state: any = getState();
+      let token = state?.auth?.token ?? null;
+      if (!token && typeof window !== "undefined") {
+        token = localStorage.getItem("token");
+      }
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-// ADD
-export const addInventoryItem = createAsyncThunk<
-  Inventory,
-  { name: string; category: string; quantity: number; status: string; price: number },
-  { rejectValue: string }
->("inventory/addInventoryItem", async (body, { rejectWithValue }) => {
-  try {
-    const { data } = await axios.post("/inventory", body);
-    return data as Inventory;
-  } catch (err: any) {
-    return rejectWithValue(err?.response?.data?.message || "Failed to add item");
+      const response = await axios.get("/inventory", { headers });
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err?.response?.data?.message || "Failed to fetch inventory");
+    }
   }
-});
+);
+
+export const addInventoryItem = createAsyncThunk(
+  "inventory/addInventoryItem",
+  async (
+    body: { name: string; category: string; quantity: number; status: string; price: number },
+    { getState, rejectWithValue }
+  ) => {
+    try {
+      const state: any = getState();
+      let token = state?.auth?.token ?? null;
+      if (!token && typeof window !== "undefined") {
+        token = localStorage.getItem("token");
+      }
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const { data } = await axios.post("/inventory", body, { headers });
+      return data;
+    } catch (err: any) {
+      return rejectWithValue(err?.response?.data?.message || "Failed to add item");
+    }
+  }
+);
 
 // UPDATE
 export const updateInventoryItem = createAsyncThunk<

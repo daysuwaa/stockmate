@@ -3,14 +3,27 @@ import authReducer from '../slices/authSlice';
 import productReducers from '../slices/inventorySlice';
 import settingsReducers from '../slices/settingsSlice';
 
+
+const preloadedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const preloadedUser = typeof window !== "undefined" ? localStorage.getItem("auth-user") : null;
+
 export const store = configureStore({
-    reducer:{
-        auth:authReducer,
-        product:productReducers,
-        settings: settingsReducers,
+  reducer: {
+    auth: authReducer,
+    product: productReducers,
+    settings: settingsReducers,
+  },
+  preloadedState: {
+    auth: {
+      user: preloadedUser ? JSON.parse(preloadedUser) : null,
+      token: preloadedToken,
+      status: "idle",
+      error: null,
+      isAuthenticated: !!preloadedToken,
     },
-devTools :process.env.NODE_ENV !== 'production',
-})
+  },
+  devTools: process.env.NODE_ENV !== "production",
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

@@ -30,12 +30,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
     }
 
-    // 4) Success: issue token, send safe user
-    const token = signToken(u.id);
-    const user = { id: u.id, name: u.name, email: u.email, phone:u.phone, website:u.website, avatar:u.avatar?? null };
+const token = signToken(u.id);
 
-    return NextResponse.json({ user, token }, { status: 200 });
+    return NextResponse.json(
+      {
+        user: {
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          phone: u.phone,
+          website: u.website,
+          avatar: u.avatar,
+          address: u.address,
+        },
+        token,
+      },
+      { status: 200 }
+    );
   } catch (e: any) {
-    return NextResponse.json({ message: e?.message || 'Login failed' }, { status: 500 });
+    return NextResponse.json({ message: e?.message || "Login failed" }, { status: 500 });
   }
 }

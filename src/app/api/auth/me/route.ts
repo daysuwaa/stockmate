@@ -1,25 +1,32 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../lib/prisma";
-import jwt from "jsonwebtoken";
+import { prisma } from "@/app/lib/prisma";
+import { verifyToken } from "../_utils";
 
 export async function GET(req: Request) {
   try {
     const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const token = authHeader.split(" ")[1];
-    const secret = process.env.JWT_SECRET;
-    if (!secret) throw new Error("JWT_SECRET not set");
+    const payload = verifyToken(token);
+    if (!payload?.sub) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
-    // decode token
-    const decoded = jwt.verify(token, secret) as { sub: string };
-
-    // notice we use decoded.sub here 👇
+    // ✅ fetch user safely
     const user = await prisma.user.findUnique({
-      where: { id: decoded.sub },
-      select: { id: true, name: true, email: true },
+      where: { id: payload.sub },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        website: true,
+        avatar: true,
+        address: true,
+      },
     });
 
     if (!user) {
@@ -28,7 +35,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ user }, { status: 200 });
   } catch (e: any) {
-    console.error("ME ERROR:", e);
+    console.error("❌ /auth/me error:", e);
     return NextResponse.json(
       { message: e?.message || "Unauthorized" },
       { status: 401 }

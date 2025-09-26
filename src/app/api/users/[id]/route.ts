@@ -32,6 +32,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     });
   } catch (e: any) {
     console.error("PROFILE UPDATE ERROR:", e);
+    
     return NextResponse.json(
       { message: e?.message || "Failed to update" },
       { status: 500 }

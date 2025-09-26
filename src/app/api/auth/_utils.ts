@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-
+const JWT_SECRET = process.env.JWT_SECRET!;
 // 1) SCHEMAS: declare what a valid body looks like.
 
 export const RegisterSchema = z.object({
@@ -35,21 +36,16 @@ export async function comparePassword(password: string, hash: string) {
 
 // 3) JWT: sign + verify tokens.
 //    SECRET comes from .env; restart dev server if you change it.
-const SECRET = process.env.JWT_SECRET || 'dev-secret';
 
 export function signToken(userId: string) {
-  // "sub" (subject) = who this token belongs to.
-  return jwt.sign({ sub: userId }, SECRET, { expiresIn: '7d' });
+  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "7d" });
 }
 
-export function verifyToken(authorization?: string | null): string | null {
-  if (!authorization) return null;
-  // Expect header like "Bearer <token>"
-  const token = authorization.startsWith('Bearer ') ? authorization.slice(7) : authorization;
+// ✅ verify and return decoded payload
+export function verifyToken(token: string): { sub: string } | null {
   try {
-    const payload = jwt.verify(token, SECRET) as { sub: string };
-    return payload.sub; // return userId if valid
+    return jwt.verify(token, JWT_SECRET) as { sub: string };
   } catch {
-    return null; // invalid/expired token
+    return null;
   }
 }
