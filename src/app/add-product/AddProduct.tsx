@@ -45,6 +45,7 @@ const AddProducts = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
 
     if (!productName.trim() || !category.trim() || !price || !quantity) {
       toast.error("❌ Please fill in all required fields");
@@ -88,6 +89,7 @@ const AddProducts = () => {
     setQuantity("");
     setStatus("In Stock");
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-8 px-4">

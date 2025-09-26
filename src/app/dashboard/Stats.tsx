@@ -4,6 +4,7 @@ import React, { ReactNode , useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store"; 
 import { fetchInventoryStats } from '../redux/slices/inventorySlice';
+import { formatCurrency } from "../utils/formatCurrency"
 
 type StatsCardProps = {
     label: string;
@@ -17,6 +18,7 @@ type StatsCardProps = {
 };
 
 const Stats = () => {
+     const { currency } = useSelector((s: RootState) => s.settings.preferences);
     const StatsCard = ({ 
         label, 
         value, 
@@ -74,14 +76,14 @@ const Stats = () => {
     }, [dispatch]);
 
     // Format currency value
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        }).format(value);
-    };
+    // const formatCurrency = (value: number) => {
+    //     return new Intl.NumberFormat('en-US', {
+    //         style: 'currency',
+    //         currency: 'USD',
+    //         minimumFractionDigits: 0,
+    //         maximumFractionDigits: 0,
+    //     }).format(value);
+    // };
 
     return (
         <div>
@@ -100,7 +102,7 @@ const Stats = () => {
                     icon={<DollarSign className="w-6 h-6 text-green-600" />}
                     label="Total Inventory Value"
                     iconBg="bg-green-100"
-                    value={formatCurrency(stats?.totalInventoryValue ?? 0)}
+                    value={formatCurrency(stats?.totalInventoryValue ?? 0, currency)}
                     gradient="bg-gradient-to-br from-green-50 to-green-100"
                     description="Current worth of all stock items"
                     trend="up"
