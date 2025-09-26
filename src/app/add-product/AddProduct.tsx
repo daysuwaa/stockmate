@@ -15,6 +15,7 @@ import { addInventoryItem } from "@/app/redux/slices/inventorySlice";
 import { AppDispatch } from "@/app/redux/store/store";
 import toast from "react-hot-toast";
 import { BiMoney } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 
 type StatusType = "In Stock" | "Low Stock" | "Out of Stock";
 
@@ -25,7 +26,7 @@ const AddProducts = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [status, setStatus] = useState<StatusType>("In Stock");
-
+ const router = useRouter()
   const [submitting, setSubmitting] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -65,6 +66,7 @@ const AddProducts = () => {
       ).unwrap();
 
       toast.success("✅ Product added successfully!");
+      router.push('/dashboard')
 
       // reset
       setProductName("");

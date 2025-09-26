@@ -23,7 +23,7 @@ const StockAlerts = () => {
   }, [dispatch]);
 
   // Filter low stock items
-  const lowStockItems = items.filter((item) => item.quantity <= 30);
+  const lowStockItems = items.filter((item) => item.quantity <= 10);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
