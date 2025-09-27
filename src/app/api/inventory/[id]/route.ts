@@ -1,15 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
-// Define context shape manually
-interface Context {
-  params: {
-    id: string;
-  };
-}
-
 // UPDATE item
-export async function PUT(req: NextRequest, { params }: Context) {
+export async function PUT(req: NextRequest, { params }: any) {
   try {
     const body = await req.json();
 
@@ -28,7 +22,7 @@ export async function PUT(req: NextRequest, { params }: Context) {
 }
 
 // DELETE item
-export async function DELETE(req: NextRequest, { params }: Context) {
+export async function DELETE(req: NextRequest, { params }: any) {
   try {
     await prisma.inventory.delete({ where: { id: params.id } });
 
