@@ -3,7 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 // UPDATE item
-export async function PUT(req: NextRequest, { params }: any) {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const body = await req.json();
 
@@ -22,9 +25,14 @@ export async function PUT(req: NextRequest, { params }: any) {
 }
 
 // DELETE item
-export async function DELETE(req: NextRequest, { params }: any) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    await prisma.inventory.delete({ where: { id: params.id } });
+    await prisma.inventory.delete({
+      where: { id: params.id },
+    });
 
     return NextResponse.json({ id: params.id }, { status: 200 });
   } catch (err: any) {
