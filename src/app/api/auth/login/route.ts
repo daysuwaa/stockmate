@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 // import { prisma } from '../../../lib/prisma';
 import { PrismaClient } from "@/generated/prisma"; 
-export const prisma = new PrismaClient();
+const prisma = new PrismaClient(); 
 import { LoginSchema, comparePassword, signToken } from '../_utils';
 
 export async function POST(req: Request) {
