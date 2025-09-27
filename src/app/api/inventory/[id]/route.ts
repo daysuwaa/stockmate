@@ -1,18 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
 // UPDATE user
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params; // ✅ no await needed
+    const { id } = context.params;
     const body = await req.json();
 
     const user = await prisma.user.update({
-      where: { id },
+      where: { id }, // id is a string in schema
       data: body,
     });
 
@@ -28,13 +27,13 @@ export async function PUT(
 // DELETE user
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const { id } = params; // ✅ no await needed
+    const { id } = context.params;
 
     await prisma.user.delete({
-      where: { id },
+      where: { id }, // id is a string in schema
     });
 
     return NextResponse.json({ id }, { status: 200 });
