@@ -63,15 +63,19 @@ const AddProduct = () => {
     }
   };
   const categories = [
-    "Electronics",
-    "Clothing",
+        "Electronics",
+    "Clothing & Accessories",
+    "Office Supplies",
+    "Furniture",
     "Home & Garden",
     "Sports & Outdoors",
-    "Books",
+    "Books & Stationaries",
     "Health & Beauty",
     "Toys & Games",
     "Automotive",
+    "Baby and Kids",
     "Food & Beverages",
+    "Snacks & Drinks",
     "Other",
   ];
 
