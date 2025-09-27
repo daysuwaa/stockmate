@@ -10,6 +10,7 @@ import {
   Search,
 } from "lucide-react";
 import Link from "next/link";
+import Spinner from "../components/Spinner";
 
 export default function InventoryTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,13 +76,6 @@ const filteredData = useMemo(() => {
     });
   };
 
-  // const formatCurrency = (price: , currencynumber) => {
-  //   return new Intl.NumberFormat("en-US", {
-  //     style: "currency",
-  //     currency: "USD",
-  //   }).format(price);
-  // };
-
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -89,7 +83,7 @@ const filteredData = useMemo(() => {
   };
 
 
-if (loading) return <p className="p-4 text-xl">Loading...</p>;
+if (loading) return <Spinner/>;
 if (error) return <p className="p-4 text-red-600">{error}</p>;
   return (
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">

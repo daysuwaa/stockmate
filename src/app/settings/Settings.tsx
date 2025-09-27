@@ -44,7 +44,7 @@ const Settings = () => {
                       <span>Preferences</span>
                     </div>
                   </button>
-                  <button 
+                  {/* <button 
                     onClick={() => setActiveTab("security")}
                     className={`w-full text-left px-3 py-3 rounded-lg transition-all lg:hover:scale-105 ${
                       activeTab === "security" ? "bg-gray-900 border-l-4 border-green-700 cursor-pointer text-white font-medium" : " cursor-pointer text-gray-600 hover:bg-gray-50"
@@ -54,7 +54,7 @@ const Settings = () => {
                       <Shield className="h-4 w-4" />
                       <span>Security</span>
                     </div>
-                  </button>
+                  </button> */}
                 </nav>
                 <div className="lg:col-span-3">
             {renderTab()}

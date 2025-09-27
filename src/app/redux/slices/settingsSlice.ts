@@ -44,7 +44,7 @@ const initialState: SettingsState = {
     preferences:{
         darkMode: "light",
         language:'en',
-        currency:'USD',
+        currency:'NGN',
     },
 
     security:{

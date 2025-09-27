@@ -17,7 +17,7 @@ const Preferences = () => {
       </h2>
 
       {/* Language */}
-      <div className="mb-6 ">
+      {/* <div className="mb-6 ">
         <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
         <select
           value={preferences.language}
@@ -30,7 +30,7 @@ const Preferences = () => {
           <option value="fr">French</option>
           <option value="es">Spanish</option>
         </select>
-      </div>
+      </div> */}
       {/* Currency */}
       <div className="mb-6">
         <label className=" text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -44,9 +44,10 @@ const Preferences = () => {
           }}
           className="w-full border px-4 py-3 rounded-lg focus:ring-2 focus:ring-purple-500"
         >
+          <option value="NGN">₦ Naira</option>
           <option value="USD">$ USD</option>
           <option value="EUR">€ Euro</option>
-          <option value="NGN">₦ Naira</option>
+         
         </select>
       </div>
 

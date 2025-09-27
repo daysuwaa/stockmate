@@ -7,11 +7,21 @@ import { Package, Pencil, Check, Eye } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
-import { fetchInventoryStats, deleteInventoryItem } from "../redux/slices/inventorySlice";
+import { fetchInventoryStats, deleteInventoryItem, updateInventoryItem } from "../redux/slices/inventorySlice";
+import EditModal from "./EditModal";
+
+type Item = {
+  id: number;
+  name: string;
+  category: string;
+  quantity: number;
+  status: string;
+  price: number; // Added price field
+};
 
 const StockAlerts = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [isViewModal, setIsViewModalOpen] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +58,16 @@ const StockAlerts = () => {
     setIsDeleteModalOpen(false);
     toast.success("Low stock alert dismissed successfully!");
   };
+  
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+const handleSave = (updatedItem: Item) => {
+  // Handle the save logic (dispatch to Redux, API call, etc.)
+  dispatch(updateInventoryItem(updatedItem));
+  setEditModalOpen(false);
+  toast.success("Product updated successfully!");
+};
+
 
 
   return (
@@ -85,9 +105,9 @@ const StockAlerts = () => {
                     >
                       <Eye className="w-4 h-4" /> View
                     </button>
-                    <button className="text-gray-600 hover:underline text-xs flex cursor-pointer items-center gap-1">
+                    {/* <button className="text-gray-600 hover:underline text-xs flex cursor-pointer items-center gap-1">
                       <Pencil className="w-4 h-4" /> Edit
-                    </button>
+                    </button> */}
                     <button
   type="button"
   onClick={() => {
@@ -173,6 +193,12 @@ const StockAlerts = () => {
         onClose={() => setIsViewModalOpen(false)}
         item={selectedItem}
       />
+     <EditModal 
+  isOpen={editModalOpen}
+  onClose={() => setEditModalOpen(false)}
+  item={selectedItem}
+  onSave={handleSave}
+/>
     </div>
   );
 };

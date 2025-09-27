@@ -1,5 +1,5 @@
 "use client"
-import { Package, TrendingUp, AlertTriangle, CircleAlert, DollarSign } from 'lucide-react';
+import { Package,  AlertTriangle, CircleAlert, DollarSign } from 'lucide-react';
 import React, { ReactNode , useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store"; 
@@ -26,24 +26,23 @@ const Stats = () => {
         gradient, 
         iconBg, 
         description, 
-        trend = 'neutral',
-        trendValue 
+        // trend = 'neutral',
     }: StatsCardProps) => {
-        const getTrendColor = () => {
-            switch (trend) {
-                case 'up': return 'text-green-600';
-                case 'down': return 'text-red-600';
-                default: return 'text-gray-600';
-            }
-        };
+        // const getTrendColor = () => {
+        //     switch (trend) {
+        //         case 'up': return 'text-green-600';
+        //         case 'down': return 'text-red-600';
+        //         default: return 'text-gray-600';
+        //     }
+        // };
 
-        const getTrendIcon = () => {
-            switch (trend) {
-                case 'up': return <TrendingUp className="w-3 h-3" />;
-                case 'down': return <TrendingUp className="w-3 h-3 rotate-180" />;
-                default: return null;
-            }
-        };
+        // const getTrendIcon = () => {
+        //     switch (trend) {
+        //         case 'up': return <TrendingUp className="w-3 h-3" />;
+        //         case 'down': return <TrendingUp className="w-3 h-3 rotate-180" />;
+        //         default: return null;
+        //     }
+        // };
 
         return (
             <div className={`${gradient} p-6 rounded-xl shadow-lg border border-white/20 backdrop-blur-sm hover:shadow-xl transition-all duration-300 hover:scale-105 group`}>
@@ -51,12 +50,12 @@ const Stats = () => {
                     <div className={`${iconBg} p-3 rounded-lg group-hover:scale-110 transition-transform duration-300`}>
                         {icon}
                     </div>
-                    {trendValue && (
+                    {/* {trendValue && (
                         <div className={`flex items-center gap-1 ${getTrendColor()} text-sm font-medium`}>
                             {getTrendIcon()}
                             <span>{trendValue}</span>
                         </div>
-                    )}
+                    )} */}
                 </div>
                 
                 <div className="space-y-1">
