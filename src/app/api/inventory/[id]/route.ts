@@ -1,17 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+// Define context shape manually
+interface Context {
+  params: {
+    id: string;
+  };
+}
+
+// UPDATE item
+export async function PUT(req: NextRequest, { params }: Context) {
   try {
-    const { id } = context.params;
     const body = await req.json();
 
     const item = await prisma.inventory.update({
-      where: { id },
+      where: { id: params.id },
       data: body,
     });
 
@@ -24,16 +27,12 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+// DELETE item
+export async function DELETE(req: NextRequest, { params }: Context) {
   try {
-    const { id } = context.params;
+    await prisma.inventory.delete({ where: { id: params.id } });
 
-    await prisma.inventory.delete({ where: { id } });
-
-    return NextResponse.json({ id }, { status: 200 });
+    return NextResponse.json({ id: params.id }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json(
       { message: err.message || "Error deleting inventory" },
