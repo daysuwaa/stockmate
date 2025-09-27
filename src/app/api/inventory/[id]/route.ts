@@ -2,45 +2,45 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 
-// UPDATE item
+// UPDATE user
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params; // Await the params
+    const { id } = params; // ✅ no await needed
     const body = await req.json();
 
-    const item = await prisma.inventory.update({
+    const user = await prisma.user.update({
       where: { id },
       data: body,
     });
 
-    return NextResponse.json(item, { status: 200 });
+    return NextResponse.json(user, { status: 200 });
   } catch (err: any) {
     return NextResponse.json(
-      { message: err.message || "Error updating inventory" },
+      { message: err.message || "Error updating user" },
       { status: 500 }
     );
   }
 }
 
-// DELETE item
+// DELETE user
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params; // Await the params
-    
-    await prisma.inventory.delete({
+    const { id } = params; // ✅ no await needed
+
+    await prisma.user.delete({
       where: { id },
     });
 
     return NextResponse.json({ id }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json(
-      { message: err.message || "Error deleting inventory" },
+      { message: err.message || "Error deleting user" },
       { status: 500 }
     );
   }
