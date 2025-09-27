@@ -5,13 +5,14 @@ import { prisma } from "@/app/lib/prisma";
 // UPDATE item
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params; // Await the params
     const body = await req.json();
 
     const item = await prisma.inventory.update({
-      where: { id: params.id },
+      where: { id },
       data: body,
     });
 
@@ -27,14 +28,16 @@ export async function PUT(
 // DELETE item
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params; // Await the params
+    
     await prisma.inventory.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
-    return NextResponse.json({ id: params.id }, { status: 200 });
+    return NextResponse.json({ id }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json(
       { message: err.message || "Error deleting inventory" },
