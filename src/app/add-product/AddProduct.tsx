@@ -79,7 +79,7 @@ const AddProducts = () => {
       setPrice("");
       setQuantity("");
       setStatus("In Stock");
-    } catch (err: any) {
+    } catch (err: Error | unknown) {
       toast.error(`❌ Failed to add product: ${err}`);
       console.error("Add product failed:", err);
     } finally {

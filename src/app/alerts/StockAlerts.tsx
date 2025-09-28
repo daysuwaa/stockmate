@@ -39,7 +39,7 @@ const StockAlerts = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleOpenView = (item: any) => {
+  const handleOpenView = (item: unknown) => {
     setSelectedItem(item);
     setIsViewModalOpen(true);
   };
