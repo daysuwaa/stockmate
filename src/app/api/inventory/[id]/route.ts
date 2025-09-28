@@ -4,10 +4,10 @@ import { prisma } from "@/app/lib/prisma";
 // UPDATE user
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params; // Await the params Promise
     const body = await req.json();
 
     const user = await prisma.user.update({
@@ -27,10 +27,10 @@ export async function PUT(
 // DELETE user
 export async function DELETE(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params; // Await the params Promise
 
     await prisma.user.delete({
       where: { id }, // id is a string in schema

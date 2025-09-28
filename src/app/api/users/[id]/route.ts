@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
 export const prisma = new PrismaClient();
 
-export async function PUT(req: Request, context: { params: { id: string } }) {
+export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params; // Await the params Promise
     const body = await req.json();
 
     const updated = await prisma.user.update({
