@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Profile from './Profile'
 import Security from './Security'
-import { Palette, Shield, User } from 'lucide-react'
+import { Palette, User } from 'lucide-react'
 import Preferences from './Preferences'
 const Settings = () => {
     const [activeTab, setActiveTab] = useState("profile")

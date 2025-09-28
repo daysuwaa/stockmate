@@ -171,7 +171,7 @@ const inventorySlice = createSlice({
       })
       .addCase(fetchInventory.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Error fetching inventory";
+        state.error = typeof action.payload === "string" ? action.payload : "Error fetching inventory";
       })
       
       // ADD

@@ -39,7 +39,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store/store";
-import { login, logout } from "@/app/redux/slices/authSlice";
+import { login } from "@/app/redux/slices/authSlice";
 
 export default function AuthPersist() {
   const dispatch = useDispatch();

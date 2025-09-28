@@ -25,7 +25,7 @@ const SignUpPage = () => {
   
     const onSubmit = async(e:React.FormEvent) => {
       e.preventDefault();
-      const result = await dispatch(registerUser({name, email, password, phone, website}));
+      const result = await dispatch(registerUser({name, email, password, phone: Number(phone), website}));
       console.log(result);
       if (registerUser.fulfilled.match(result)) {
         router.push('/dashboard');
