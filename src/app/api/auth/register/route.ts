@@ -5,13 +5,16 @@ import { PrismaClient } from "@/generated/prisma";
 const prisma = new PrismaClient(); 
 import { RegisterSchema, hashPassword, signToken } from "../_utils";
 
+
 export async function POST(req: Request) {
   try {
     // 1. Parse request body
     const body = await req.json();
+     console.log("Registration request body:", body);
     const parsed = RegisterSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ message: "Invalid input" }, { status: 400 });
+      console.log("Validation errors:", parsed.error.issues); 
+      return NextResponse.json({ message: "Invalid input", errors: parsed.error.issues}, { status: 400 });
     }
 
     const { name, email, phone, website, password } = parsed.data;

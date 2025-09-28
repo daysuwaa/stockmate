@@ -11,9 +11,7 @@ export const RegisterSchema = z.object({
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   "Invalid email"
 ), 
- phone: z
-  .string()
-  .regex(/^\d{11}$/, "Phone must be exactly 11 digits"),
+ phone: z.union([z.string(), z.number()]).transform(val => String(val)),
   website: z.string().trim().optional(),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
