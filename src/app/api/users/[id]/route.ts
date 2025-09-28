@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
-export const prisma = new PrismaClient();
+
+const prisma = new PrismaClient(); 
 
 export async function PUT(req: Request, context: { params: Promise<{ id: string }> }) {
   try {
