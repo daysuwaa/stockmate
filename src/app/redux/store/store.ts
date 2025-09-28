@@ -3,7 +3,6 @@ import authReducer from '../slices/authSlice';
 import productReducers from '../slices/inventorySlice';
 import settingsReducers from '../slices/settingsSlice';
 
-
 const preloadedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 const preloadedUser = typeof window !== "undefined" ? localStorage.getItem("auth-user") : null;
 
@@ -17,7 +16,7 @@ export const store = configureStore({
     auth: {
       user: preloadedUser ? JSON.parse(preloadedUser) : null,
       token: preloadedToken,
-      status: "idle",
+      status: "idle" as const, // Use 'as const' to ensure literal type
       error: null,
       isAuthenticated: !!preloadedToken,
     },
@@ -29,6 +28,3 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
-
-
-
