@@ -9,6 +9,12 @@ const Hero = () => {
   const router = useRouter();
   
   return (
+    <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight"
+            >
     <div
       className="relative bg-gradient-to-br from-slate-50 via-green-50 to-yellow-100 py-24 lg:py-0 lg:min-h-screen flex items-center justify-center "
       id="home"
@@ -21,12 +27,7 @@ const Hero = () => {
               For solo sellers and small business
             </span>
           </div>
-           <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight"
-            >
+          
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
           
           <span className="bg-gradient-to-r from-green-600 via-lime-600 to-yellow-400 bg-clip-text text-transparent">
@@ -39,7 +40,7 @@ const Hero = () => {
             <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transform scale-x-0 animate-pulse"></div>
         </span>
           </h1>
-           </motion.h1>
+          
 
           <p className="mt-4 text-gray-600 text-lg">
             Track products, monitor stock, and manage your inventory from one clean dashboard — no spreadsheets needed.
@@ -54,7 +55,7 @@ const Hero = () => {
     Get Started <ArrowRight size={16} />
   </button>
 
-  <button className="text-green-700 border px-6 py-3 rounded hover:bg-gray-100 text-sm flex items-center gap-2">
+  <button onClick={()=>router.push('#testimonial')} className="text-green-700 border px-6 py-3 rounded hover:bg-gray-100 text-sm flex items-center gap-2">
     <PlayCircle size={16} />
     See Demo
   </button>
@@ -63,6 +64,7 @@ const Hero = () => {
         </div>
       </section>
     </div>
+     </motion.h1>
   );
 };
 

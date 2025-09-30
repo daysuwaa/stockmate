@@ -1,60 +1,39 @@
 'use client';
 import React from 'react';
-import { Quote } from 'lucide-react';
+import Image from 'next/image';
+import Demo from "../../assests/demo.jpeg";
 
-const testimonials = [
-  {
-    name: 'Ada',
-    title: 'Home-Based Baker',
-    quote:
-      'I use StockMate to track ingredients before each market day. It’s simple, clear, and helps me stay ahead of bulk orders.',
-  },
-  {
-    name: 'Chioma',
-    title: 'Wig Vendor',
-    quote:
-      'StockMate replaced my messy notes app. I can now track closures, bundles, and packaging without stress.',
-  },
-  {
-    name: 'Tomi',
-    title: 'Thrift Seller',
-    quote:
-      'I use StockMate to sort pieces by size and brand. The restock alerts are a game changer before my IG drops!',
-  },
-];
-
-const TestimonialsSection = () => {
+const DemoSection = () => {
   return (
-    <section id="testimonials" className="py-20 bg-pink-50 px-6">
-      <div className="max-w-4xl mx-auto text-center mb-16">
+    <section id="demo" className="py-20 bg-pink-50 px-6">
+      <div className="max-w-5xl mx-auto text-center">
+        {/* Tagline */}
         <div className="inline-flex items-center space-x-2 bg-pink-100 px-4 py-2 rounded-full mb-4">
-          <Quote className="text-pink-600 w-4 h-4" />
-          <span className="text-sm font-medium text-pink-700">What they’re saying</span>
+          <span className="text-sm font-medium text-pink-700">See StockMate in Action</span>
         </div>
+
+        {/* Heading */}
         <h2 className="text-4xl font-bold text-gray-900">
-          Loved by solo vendors & small business owners
+          A simple way to manage your inventory
         </h2>
         <p className="text-lg text-gray-600 mt-2">
-          Real stories from real people using StockMate to stay organized and stress-free.
+          Here’s a sneak peek of how StockMate keeps your products organized, alerts you on low stock, and simplifies your workflow.
         </p>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {testimonials.map((t, i) => (
-          <div
-            key={i}
-            className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-pink-100"
-          >
-            <p className="text-gray-700 italic">“{t.quote}”</p>
-            <div className="mt-4">
-              <p className="font-semibold text-pink-700">{t.name}</p>
-              <p className="text-sm text-gray-500">{t.title}</p>
-            </div>
-          </div>
-        ))}
+        {/* Demo Image */}
+        <div className="mt-10 relative rounded-2xl overflow-hidden shadow-xl border border-pink-100">
+          <Image 
+            src={Demo} 
+            alt="StockMate App Demo" 
+            className="w-full h-auto object-cover"
+            priority
+          />
+          {/* subtle overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-pink-100/20 to-transparent pointer-events-none"></div>
+        </div>
       </div>
     </section>
   );
 };
 
-export default TestimonialsSection;
+export default DemoSection;

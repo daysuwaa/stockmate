@@ -42,21 +42,9 @@ const Login = () => {
   }
   const isFormFilled = email.trim() !== '' && password.trim() !== '';
 
-//   // toaster
-//    useEffect(() => {
-//   const toastId = "auth-toast"; 
-
-//   if (status === "loading") {
-//     toast.loading("Logging user in...", { id: toastId });
-//   } else if (status === "succeeded") {
-//     toast.success("User Logged In Successfully", { id: toastId });
-//   } else if (status === "failed" && error) {
-//     toast.error(error, { id: toastId });
-//   }
-// }, [status, error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-pink-100 px-4">
       <form  onSubmit={onSubmit} className="bg-white rounded-md p-6 w-full max-w-md shadow-sm space-y-5">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Welcome Back!</h2>
         <p className="text-center">Kindly log in into your account</p>

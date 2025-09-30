@@ -1,5 +1,5 @@
 'use client';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, } from '@/app/redux/slices/authSlice';
@@ -29,22 +29,18 @@ const SignUpPage = () => {
       console.log(result);
       if (registerUser.fulfilled.match(result)) {
         router.push('/dashboard');
+         toast.success('Signed in successfully :)', {id:"toastidd-sucess"})
       }
+      if(registerUser.rejected.match(result)){
+            toast.error('Inavlid Details, try again')
+          }
+          if(registerUser.pending.match(result)){
+            toast.loading('loading..');
+          }
     }
     const isFormFilled = email.trim() !== '' && password.trim() !== '';
-    useEffect(() => {
-      const toastId= "auth-toast";
-   if (status === "loading") {
-       toast.loading("Signing user...", { id: toastId });
-     } else if (status === "succeeded") {
-       toast.success("User Signed In Successfully", { id: toastId });
-     } else if (status === "failed" && error) {
-       toast.error(error, { id: toastId });
-     }
-   }, [status, error]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-pink-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-pink-100 px-4">
       <form onSubmit={onSubmit} className="bg-wite  rounded-md p-6 w-full max-w-xl bg-white shadow-gray-200 shadow-lg space-y-5">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Welcome to StockMate 😃</h2>
         <p className='text-center'>Kindly Sign up into your account</p>
@@ -82,7 +78,7 @@ const SignUpPage = () => {
           />
         </div>
         <div className="flex flex-col">
-          <label htmlFor="email" className="text-sm text-gray-700">Website</label>
+          <label htmlFor="email" className="text-sm text-gray-700">Website(Optional)</label>
           <input
             type="text"
              value={website}
