@@ -2,21 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { Edit } from 'lucide-react';
 
 type Item = {
-  id: number;
+  id: string; // Changed to string to match your Redux type
   name: string;
   category: string;
   quantity: number;
-  status: string;
-  price: number; // Added price field
+  status: 'In Stock' | 'Low Stock' | 'Out of Stock'; // More specific type
+  price: number;
+  updated: string; // Added missing updated field
 };
-
 
 type EditModalProps = {
   isOpen: boolean;
   onClose: () => void;
   item: Item | null;
-  onSave: (item: Item) => void; // Added onSave callback
+  onSave: (item: Item) => void;
 };
+
+// Add categories constant
+// const categories = [
+//   "Electronics",
+//   "Clothing & Accessories",
+//   "Office Supplies",
+//   "Furniture",
+//   "Home & Garden",
+//   "Sports & Outdoors",
+//   "Books & Stationaries",
+//   "Toys & Games",
+//   "Health & Beauty",
+//   "Automotive",
+//   "Baby and Kids",
+//   "Food & Beverages",
+//   "Snacks & Drinks",
+//   "Others"
+// ];
 
 const EditModal = ({ isOpen, onClose, item, onSave }: EditModalProps) => {
   const [formData, setFormData] = useState<Item | null>(null);
@@ -49,7 +67,7 @@ const EditModal = ({ isOpen, onClose, item, onSave }: EditModalProps) => {
   if (!isOpen || !item) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-white rounded-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div className="relative overflow-hidden">
           {/* Animated background */}

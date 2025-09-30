@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/(dashboard)/stock-alert/page.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import ViewModal from "./ViewModal";
-import { Package, Pencil, Check, Eye } from "lucide-react";
+import { Package, Check, Eye } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
 import { fetchInventoryStats, deleteInventoryItem } from "../redux/slices/inventorySlice";
+// import EditModal from "./EditModal";
 
 const StockAlerts = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [isViewModal, setIsViewModalOpen] = useState(false);
+  // const [isEditModal, setIsEditModalOpen] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((s: RootState) => s.product);
@@ -43,6 +44,10 @@ const StockAlerts = () => {
     setSelectedItem(item);
     setIsViewModalOpen(true);
   };
+  // const handleOpenEdit = (item: unknown) => {
+  //   setSelectedItem(item);
+  //   setIsEditModalOpen(true);
+  // };
 
   const handleDismiss = () => {
     setIsDeleteModalOpen(false);
@@ -85,9 +90,9 @@ const StockAlerts = () => {
                     >
                       <Eye className="w-4 h-4" /> View
                     </button>
-                    <button className="text-gray-600 hover:underline text-xs flex cursor-pointer items-center gap-1">
+                    {/* <button onClick={()=>handleOpenEdit(item)} className="text-gray-600 hover:underline text-xs flex cursor-pointer items-center gap-1">
                       <Pencil className="w-4 h-4" /> Edit
-                    </button>
+                    </button> */}
                     <button
   type="button"
   onClick={() => {
@@ -173,6 +178,17 @@ const StockAlerts = () => {
         onClose={() => setIsViewModalOpen(false)}
         item={selectedItem}
       />
+     {/* <EditModal 
+  isOpen={isEditModal} 
+  onClose={() => setIsEditModalOpen(false)} 
+  item={selectedItem}  // Pass the actual selected item
+  onSave={(updatedItem) => {
+    // Dispatch your update action here
+    dispatch(updateInventoryItem(updatedItem));
+    setIsEditModalOpen(false);
+    toast.success("Item updated successfully!");
+  }} 
+/> */}
     </div>
   );
 };
