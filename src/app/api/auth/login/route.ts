@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 import { LoginSchema, comparePassword, signToken } from '../_utils';
 
 export async function POST(req: Request) {
+  console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
   try {
     const body = await req.json();
 

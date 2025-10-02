@@ -4,6 +4,11 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 const JWT_SECRET = process.env.JWT_SECRET!;
 // 1) SCHEMAS: declare what a valid body looks like.
+if (!JWT_SECRET) {
+  throw new Error(
+    "JWT_SECRET is not defined. Please set it in your .env.local file"
+  );
+}
 
 export const RegisterSchema = z.object({
   name: z.string().min(2, "Name is too short"),
