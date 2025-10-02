@@ -142,7 +142,7 @@ if (loading)
   <Spinner/>
   );
 if (error) 
-  return <p className='text-red-500 text-sm'>Error</p>
+  return <p className='text-gray-500 text-sm text-center'>No inventory yet</p>
   return (
     
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">
