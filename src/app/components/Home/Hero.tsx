@@ -16,21 +16,21 @@ const Hero = () => {
               className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight"
             >
     <div
-      className="relative bg-gradient-to-br from-slate-50 via-green-50 to-yellow-100 py-24 lg:py-0 lg:min-h-screen flex items-center justify-center "
+      className="relative bg-gradient-to-br from-slate-50 via-pink-50 to-purple-100 py-24 lg:py-0 lg:min-h-screen flex items-center justify-center "
       id="home"
     >
       <section id="hero">
         <div className="max-w-6xl mx-auto text-center px-4">
-          <div className="inline-flex items-center space-x-2 bg-gradient-to-r shadow-lg from-green-100 to-yellow-100 px-4 py-2 rounded-full mb-6">
-            <FcBusinesswoman size={16} className="text-green-600" />
-            <span className="text-sm font-medium text-green-700">
+          <div className="inline-flex items-center space-x-2 bg-gradient-to-r shadow-lg from-pink-100 to-purple-100 px-4 py-2 rounded-full mb-6">
+            <FcBusinesswoman size={16} className="text-pink-600" />
+            <span className="text-sm font-medium text-pink-700">
               For solo sellers and small business
             </span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
+          <h1 className="text-4xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
           
-          <span className="bg-gradient-to-r from-green-600 via-lime-600 to-yellow-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-pink-600 via-blue-600 to-purple-400 bg-clip-text text-transparent">
             Inventory
           </span>{" "}
           tracker for
@@ -50,12 +50,12 @@ const Hero = () => {
            <div className="mt-6 flex gap-4 justify-center">
   <button
     onClick={() => router.push("/auth/register")}
-    className="bg-gray-900 text-white px-6 py-3 rounded hover:bg-green-600 text-sm flex items-center gap-2"
+    className="bg-gray-900 text-white px-6 py-3 rounded hover:bg-pink-600 text-sm flex items-center gap-2"
   >
     Get Started <ArrowRight size={16} />
   </button>
 
-  <button onClick={()=>router.push('#testimonial')} className="text-green-700 border px-6 py-3 rounded hover:bg-gray-100 text-sm flex items-center gap-2">
+  <button onClick={()=>router.push('#demo')} className="text-pink-700 border px-6 py-3 rounded hover:bg-gray-100 text-sm flex items-center gap-2">
     <PlayCircle size={16} />
     See Demo
   </button>

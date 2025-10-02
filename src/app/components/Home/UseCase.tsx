@@ -73,7 +73,7 @@ const UseCase = () => {
   </p>
 </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl gap-12 m mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl gap-12 mx-5 lg:mx-auto">
         {useCases.map((useCase, index) => (
           <div
             key={index}
@@ -84,15 +84,6 @@ const UseCase = () => {
             <p className="text-sm text-gray-600 mt-2 leading-6">{useCase.description}</p>
           </div>
         ))}
-      </div>
-
-      {/* Optional callout */}
-      <div className="mt-16 text-center">
-        <p className="text-lg font-medium text-gray-700">
-          🛠️ Whatever you sell, StockMate helps you track it.  
-          <br />
-          <span className="text-indigo-600 font-semibold">If it’s countable, it’s trackable.</span>
-        </p>
       </div>
     </section>
   );

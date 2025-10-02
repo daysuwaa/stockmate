@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import Logo from './Logo';
 
 
 const Navbar = () => {
@@ -13,14 +14,14 @@ const Navbar = () => {
   return (
     <nav className="bg-white flex items-center justify-between  z-50 p-4 ">
       {/* Logo */}
-      <h1 className="text-xl font-bold">StockMate</h1>
+      <Logo/>
 
       {/* Desktop Nav */}
       <ul className="lg:flex gap-7 text-gray-700 hidden">
-        <li><Link href="#hero" className='hover:border-b-4 hover:border-gray-900 cursor-pointer'>Home</Link></li>
-        <li><Link href="#features" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Features</Link></li>
-        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Use Cases</Link></li>
-        <li><Link href="#testimonials" className='hover:border-b-4 hover:border-gray-900 cursor-pointer' >Testimonials</Link></li>
+        <li><Link href="#hero" className='hover:border-b-4 hover:border-pink-400 cursor-pointer'>Home</Link></li>
+        <li><Link href="#features" className='hover:border-b-4 hover:border-pink-400 cursor-pointer' >Features</Link></li>
+        <li><Link href="#use-cases" className='hover:border-b-4 hover:border-pink-400 cursor-pointer' >Use Cases</Link></li>
+        <li><Link href="#demo" className='hover:border-b-4 hover:border-pink-400 cursor-pointer' >Demo</Link></li>
       </ul>
 
       {/* Desktop Auth */}
@@ -33,7 +34,7 @@ const Navbar = () => {
         </button>
         <button
           onClick={() => router.push('/auth/register')}
-          className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-green-700 text-sm cursor-pointer"
+          className="bg-gray-900 text-white px-4 py-2 rounded hover:bg-pink-400 text-sm cursor-pointer"
         >
           Sign Up
         </button>
@@ -49,7 +50,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="lg:hidden fixed inset-0 bg-white py-8 px-2  z-50 flex flex-col gap-6">
           <div className="flex justify-between items-center  ">
-            <h1 className="text-xl font-bold">StockMate</h1>
+            <Logo/>
             <X
               onClick={() => setIsOpen(false)}
               className="cursor-pointer"
@@ -60,7 +61,7 @@ const Navbar = () => {
             <li><Link href="#hero" onClick={() => setIsOpen(false)} className=''>Home</Link></li>
             <li><Link href="#features" onClick={() => setIsOpen(false)}>Features</Link></li>
             <li><Link href="#use-cases" onClick={() => setIsOpen(false)}>Use Cases</Link></li>
-            <li><Link href="#testimonials" onClick={() => setIsOpen(false)}>Testimonials</Link></li>
+            <li><Link href="#demo" onClick={() => setIsOpen(false)}>Demo</Link></li>
             <li>
               <button
                 onClick={() => {
