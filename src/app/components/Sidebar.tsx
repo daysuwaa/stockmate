@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { usePathname } from 'next/navigation';
 import { useRouter } from "next/navigation";
 import { toast } from 'react-hot-toast';
+import Logo from './Logo';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,10 +33,8 @@ const Sidebar = () => {
   return (
     <>
     <div className='mb-8 top-0 fixed lg:hidden '>
-        <h1 className='text-center pt-5 pl-3 font-bold text-2xl text-rose-800 tracking-tight'>
-          StockMate
-        </h1>
-        <div className='w-16 h-1  bg-rose-400 mx-auto mt-2 rounded-full'></div>
+       
+      <Logo/>
     
 
       {/* Mobile Menu Button */}
@@ -62,11 +61,8 @@ const Sidebar = () => {
         lg:translate-x-0 w-3xs
       `}>
       {/* Header */}
-     <div className='mb-8 hidden lg:block'>
-          <h1 className='text-center font-bold text-2xl text-rose-800 tracking-tight'>
-            StockMate
-          </h1>
-          <div className='w-16 h-1 bg-rose-400 mx-auto mt-2 rounded-full'></div>
+     <div className='mt-[-1rem] hidden lg:block'>
+          <Logo/>
         </div>
 
         {/* Navigation Links */}
