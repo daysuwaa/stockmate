@@ -32,7 +32,7 @@ const Sidebar = () => {
   };
   return (
     <>
-    <div className='mb-8 top-0 fixed lg:hidden '>
+    <div className='mb-8 top-0 z-2 fixed lg:hidden '>
        
       <Logo/>
     
@@ -40,7 +40,7 @@ const Sidebar = () => {
       {/* Mobile Menu Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className='lg:hidden fixed top-4 right-4 z-50 p-2 bg-rose-100 rounded-lg shadow-md hover:bg-rose-200 transition-colors duration-200'
+        className='lg:hidden fixed top-4 right-4 p-2 bg-rose-100 rounded-lg shadow-md hover:bg-rose-200 transition-colors duration-200'
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -48,7 +48,7 @@ const Sidebar = () => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div 
-          className='lg:hidden fixed inset-0  bg-opacity-50 z-40'
+          className='lg:hidden fixed inset-0  bg-opacity-50 '
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -61,7 +61,7 @@ const Sidebar = () => {
         lg:translate-x-0 w-3xs
       `}>
       {/* Header */}
-     <div className='mt-[-1rem] hidden lg:block'>
+     <div className='lg:block'>
           <Logo/>
         </div>
 

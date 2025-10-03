@@ -46,7 +46,9 @@ const Login = () => {
 
   return (
 <div  className="min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-white px-4">
+  <div className='p-5'>
   <Logo/>
+  </div>
     <div className=" flex items-center justify-center">
       <div className="bg-white rounded-2xl p-8 w-full mt-[10rem] max-w-md shadow-xl border border-purple-100 space-y-6">
         {/* Header */}

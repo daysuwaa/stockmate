@@ -33,7 +33,7 @@ const Header = () => {
     <div className="mt-20 lg:mt-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 border-b border-gray-100">
       {/* Main Header Section */}
       <div className="px-6 pt-8">
-        <div className="flex items-center justify-between mb-4">
+        <div className="lg:flex items-center justify-between mb-4">
           {isAuthenticated ? (
             <>
               {/* Left side - Name only */}
@@ -44,21 +44,34 @@ const Header = () => {
               </div>
 
               {/* Right side - Email, Date, Profile */}
-              <div className="flex items-center space-x-6">
+              <div className="lg:flex items-center space-x-6 mt-5 lg:mt-0">
                 {/* Email and Date info */}
-                <div className="text-right">
-                  <p className="text-gray-600 flex items-center justify-end mb-1">
+                <div className="lg:text-right items-center flex">
+                  <div>
+                  <p className="text-gray-600 flex items-center lg:justify-end mb-1">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                     {displayEmail}
                   </p>
-                  <p className="text-gray-500 flex items-center justify-end">
+                  <p className="text-gray-500 flex items-center lg:justify-end">
                     <Calendar className="w-4 h-4 mr-2" />
                     {getCurrentDate()}
                   </p>
+                  </div>
+                   <div className="relative ml-auto justify-end lg:hidden">
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-blue-100">
+                    <Image
+                      src={displayAvatar}
+                      alt="User Avatar"
+                      width={64}
+                      height={64}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
                 </div>
 
                 {/* Avatar */}
-                <div className="relative">
+                <div className="relative hidden lg:block">
                   <div className="relative w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg ring-2 ring-blue-100">
                     <Image
                       src={displayAvatar}

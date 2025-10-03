@@ -42,7 +42,9 @@ const SignUpPage = () => {
     const isFormFilled = email.trim() !== '' && password.trim() !== '';
   return (
    <div  className="min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-white px-4">
-    <Logo/>
+    <div className='p-5'>
+  <Logo/>
+  </div>
     <div className=" flex items-center justify-center">
       <form onSubmit={onSubmit} className="bg-white rounded-2xl p-8 w-full mt-[7rem] max-w-lg shadow-xl border border-purple-100 space-y-6">
         <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">Welcome to StockMate</h2>

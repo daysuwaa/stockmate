@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
+import Logo from './Logo';
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 text-gray-700">
         {/* Branding */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">StockMate</h2>
+         <Logo/>
           <p className="text-sm mt-2 leading-relaxed">
             Simple and reliable inventory tracking designed for small businesses.  
             Stay organized, save time, and keep your shelves stocked.

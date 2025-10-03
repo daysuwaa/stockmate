@@ -347,7 +347,7 @@ if (error)
       {/* to view inevntory */}
       <Modal isOpen={!!modalType} onClose={closeModal} >
   {modalType === 'view' && selectedItem && (
-  <div className="relative overflow-hidden">
+  <div className="relative overflow-hidden ">
     {/* Animated background gradient */}
     <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 opacity-60 animate-pulse"></div>
     
@@ -426,9 +426,6 @@ if (error)
       <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {/* <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-              <div className="w-3 h-3 border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
-            </div> */}
             <div>
               <p className="text-gray-600 text-xs font-semibold uppercase tracking-wide mb-1">Last Updated</p>
               <p className="text-gray-900 font-medium">{formatDate(selectedItem.updated)}</p>
@@ -437,16 +434,6 @@ if (error)
           
           {/* Mini chart visualization */}
           <div className="hidden sm:flex items-end space-x-1 opacity-60">
-            {/* {[1, 0.7, 1, 0.3, 0.8, 0.5, 1].map((height, i) => (
-              <div 
-                key={i}
-                className="w-1 bg-gradient-to-t from-blue-400 to-blue-600 rounded-full animate-pulse"
-                style={{ 
-                  height: `${height * 20 + 8}px`,
-                  animationDelay: `${i * 0.1}s` 
-                }}
-              ></div>
-            ))} */}
           </div>
         </div>
       </div>
@@ -455,7 +442,7 @@ if (error)
 )}
 
 {modalType === 'edit' && selectedItem && (
-  <div className="relative overflow-hidden">
+  <div className="relative overflow-hidden ">
     <form className="relative z-10 space-y-6 p-1" onSubmit={(e) => {
       e.preventDefault();
       if (formData) {
@@ -467,12 +454,10 @@ if (error)
       <div className='flex items-center justify-between group'>
         <div className="flex items-center">
           <div className="relative">
-            <Edit className='bg-gradient-to-r from-purple-500 to-pink-600 text-white p-2.5 rounded-xl h-11 w-11 shadow-lg transform group-hover:rotate-6 transition-all duration-300'/>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-pink-400 rounded-full animate-ping"></div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 rounded-full"></div>
+            <Edit className=' bg-blue-500 text-white p-2.5 rounded-xl h-11 w-11 shadow-lg transform group-hover:rotate-6 transition-all duration-300'/>
           </div>
           <div className="ml-3">
-            <h1 className='font-bold text-xl bg-gradient-to-r from-purple-700 to-pink-600 bg-clip-text text-transparent'>
+            <h1 className='font-bold text-xl bg-gradient-to-r from-blue-700 to-gray-600 bg-clip-text text-transparent'>
               EDIT ITEM
             </h1>
             <p className="text-xs text-gray-500 font-medium">Modify item details</p>
@@ -616,9 +601,9 @@ if (error)
               step="0.01"
               required
             />
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+            {/* <div className="absolute inset-y-0 right-0 flex items-center pr-3">
               <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">USD</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

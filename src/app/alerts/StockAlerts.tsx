@@ -58,7 +58,7 @@ const StockAlerts = () => {
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-white to-red-50">
       <div className="max-w-5xl mx-auto space-y-6">
-        <div className="bg-white shadow rounded-2xl overflow-hidden">
+        <div className="bg-white shadow rounded-2xl overflow-x-auto">
           <table className="w-full text-left table-auto">
             <thead className="bg-gray-100 text-sm text-gray-700 uppercase">
               <tr>

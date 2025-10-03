@@ -15,7 +15,7 @@ const Modal = ({
 
   return (
     <div className="fixed inset-0 bg-[#0000006a] bg-opacity-30 flex items-center justify-center z-50">
-      <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative">
+      <div className="bg-white mx-4 w-full max-w-md rounded-lg shadow-lg p-6 relative">
         {/* <h2 className="text-lg font-semibold mb-4">{title}</h2> */}
         {children}
         <button
