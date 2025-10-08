@@ -1,11 +1,12 @@
+// src/app/layout.tsx  <-- SERVER COMPONENT (no "use client" here)
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientProviders from "./ClientProviders";
+import ClientProviders from "./ClientProviders"; // ✅ import client wrapper
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-export const metadata = {
+ const metadata = {
   title: "StockMate | Track products, monitor stock, and manage your inventory from one clean dashboard",
   description: "Track products, monitor stock, and manage your inventory from one clean dashboard",
   icons: { icon: "/favicon.ico" },
@@ -29,9 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClientProviders>
-        {children}
-        </ClientProviders>
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
