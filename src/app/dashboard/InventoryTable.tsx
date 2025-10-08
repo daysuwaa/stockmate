@@ -20,7 +20,7 @@ export default function InventoryTable() {
   const [filterStatus, setFilterStatus] = useState("All");
   const dispatch = useDispatch<AppDispatch>();
   const { currency } = useSelector((s: RootState) => s.settings.preferences);
-  const { items, loading, error } = useSelector((s: RootState) => s.product);
+  const { items, loading } = useSelector((s: RootState) => s.product);
 
   useEffect(() => {
     dispatch(fetchInventory()); 
