@@ -84,7 +84,7 @@ const filteredData = useMemo(() => {
 
 
 if (loading) return <Spinner/>;
-if (error) return <p className="p-4 text-red-600">{error}</p>;
+// if (error) return <p className="p-4 text-red-600">{error}</p>;
   return (
     <div className="bg-white rounded-xl shadow-lg m-6 overflow-hidden">
       {/* Filters */}

@@ -28,39 +28,17 @@ const Stats = () => {
         description, 
         // trend = 'neutral',
     }: StatsCardProps) => {
-        // const getTrendColor = () => {
-        //     switch (trend) {
-        //         case 'up': return 'text-green-600';
-        //         case 'down': return 'text-red-600';
-        //         default: return 'text-gray-600';
-        //     }
-        // };
-
-        // const getTrendIcon = () => {
-        //     switch (trend) {
-        //         case 'up': return <TrendingUp className="w-3 h-3" />;
-        //         case 'down': return <TrendingUp className="w-3 h-3 rotate-180" />;
-        //         default: return null;
-        //     }
-        // };
-
         return (
-            <div className={`${gradient} p-6 rounded-xl shadow-lg border border-white/20 backdrop-blur-sm hover:shadow-xl transition-all duration-300 hover:scale-105 group`}>
+            <div className={`${gradient} p-4 rounded-xl shadow-lg border border-white/20 backdrop-blur-sm hover:shadow-xl transition-all duration-300 hover:scale-105 group`}>
                 <div className='flex items-center justify-between mb-4'>
                     <div className={`${iconBg} p-3 rounded-lg group-hover:scale-110 transition-transform duration-300`}>
                         {icon}
                     </div>
-                    {/* {trendValue && (
-                        <div className={`flex items-center gap-1 ${getTrendColor()} text-sm font-medium`}>
-                            {getTrendIcon()}
-                            <span>{trendValue}</span>
-                        </div>
-                    )} */}
                 </div>
                 
                 <div className="space-y-1">
                     <h3 className='font-semibold text-lg text-gray-800'>{label}</h3>
-                    <p className="text-3xl font-bold text-gray-900">{value}</p>
+                    <p className="text-2xl font-bold text-gray-900">{value}</p>
                     <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
                 </div>
             </div>
@@ -74,19 +52,10 @@ const Stats = () => {
         dispatch(fetchInventoryStats());
     }, [dispatch]);
 
-    // Format currency value
-    // const formatCurrency = (value: number) => {
-    //     return new Intl.NumberFormat('en-US', {
-    //         style: 'currency',
-    //         currency: 'USD',
-    //         minimumFractionDigits: 0,
-    //         maximumFractionDigits: 0,
-    //     }).format(value);
-    // };
 
     return (
         <div>
-            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 p-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-6'>
 
                 <StatsCard
                     icon={<Package className="w-6 h-6 text-blue-600" />}
