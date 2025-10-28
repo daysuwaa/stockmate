@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchInventory, deleteInventoryItem , updateInventoryItem} from "../../redux/slices/inventorySlice";
 import { AppDispatch, RootState } from "../../redux/store/store"; 
 import { formatCurrency } from "../../utils/formatCurrency"
+import { toast } from 'react-hot-toast';
 import Modal from './Modal';
 import { 
   ChevronLeft, 
@@ -435,9 +436,13 @@ if (error)
 {modalType === 'edit' && selectedItem && (
   <div className="relative overflow-hidden ">
     <form className="relative z-10 space-y-6 p-1" onSubmit={(e) => {
+      // toast.success("Item updated successfully!");
       e.preventDefault();
       if (formData) {
-        dispatch(updateInventoryItem(formData));
+        dispatch(updateInventoryItem(formData))
+          .then(() => toast.success("Item updated successfully!"))
+             .catch(() => toast.error("Failed to update item"));
+        // toast.success("Item updated successfully!");
         closeModal();
       }
     }}>
@@ -644,7 +649,9 @@ if (error)
         <button
           onClick={() => {
             console.log('Deleted:', selectedItem.id);
-             dispatch(deleteInventoryItem(selectedItem.id))
+            dispatch(deleteInventoryItem(selectedItem.id))
+             .then(() => toast.success("Item deleted successfully!"))
+             .catch(() => toast.error("Failed to delete item"));
             closeModal();
           }}
           className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
