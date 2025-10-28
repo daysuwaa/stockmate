@@ -4,10 +4,10 @@ import { prisma } from "../../../lib/prisma";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     console.log("PUT request to update item:", { id, body });
@@ -17,7 +17,7 @@ export async function PUT(
       data: body,
     });
 
-    console.log(" Updated item:", item);
+    console.log("Updated item:", item);
 
     return NextResponse.json(item, { status: 200 });
   } catch (err: any) {
@@ -32,10 +32,10 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const deletedItem = await prisma.inventory.delete({
       where: { id },
