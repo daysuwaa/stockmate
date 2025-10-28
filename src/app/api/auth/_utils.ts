@@ -10,13 +10,18 @@ if (!JWT_SECRET) {
   );
 }
 
+
 export const RegisterSchema = z.object({
   name: z.string().min(2, "Name is too short"),
   email: z.string().regex(
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   "Invalid email"
 ), 
- phone: z.union([z.string(), z.number()]).transform(val => String(val)),
+ phone: z.union([
+    z.string().min(11, "Phone must be at least 10 digits").max(13, "Phone must be at most 13 digits starting with 234"),
+    z.number()
+  ])
+  .transform((val) => String(val)),
   website: z.string().trim().optional(),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });

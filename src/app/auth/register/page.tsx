@@ -22,23 +22,36 @@ const SignUpPage = () => {
   const [phone, setPhone] = useState('');
   const [website, setWebsite] = useState('');
   const status = useSelector((state: RootState) => state.auth.status);
-  const error = useSelector((state: RootState) => state.auth.error);
-  
+  // const error = useSelector((state: RootState) => state.auth.error);
     const onSubmit = async(e:React.FormEvent) => {
       e.preventDefault();
       const result = await dispatch(registerUser({name, email, password, phone: Number(phone), website}));
       console.log(result);
-      if (registerUser.fulfilled.match(result)) {
-        router.push('/dashboard');
-         toast.success('Signed in successfully :)', {id:"toastidd-sucess"})
-      }
-      if(registerUser.rejected.match(result)){
-            toast.error('Inavlid Details, try again')
-          }
-          if(registerUser.pending.match(result)){
-            toast.loading('loading..');
-          }
-    }
+     // Remove loading toast after request completes
+    toast.dismiss('register-loading');
+
+  if (registerUser.fulfilled.match(result)) {
+    toast.success('Signed in successfully :)', { id: 'toastid-success' });
+    router.push('/dashboard');
+  } 
+  else if (registerUser.rejected.match(result)) {
+    // Extract the message from the backend or fallback text
+    const message =
+      (typeof result.payload === 'object' && result.payload !== null && 'message' in result.payload
+        ? (result.payload as { message?: string }).message
+        : typeof result.payload === 'string'
+        ? result.payload
+        : undefined) ||
+      (typeof result.error === 'object' && result.error !== null && 'message' in result.error
+        ? (result.error as { message?: string }).message
+        : typeof result.error === 'string'
+        ? result.error
+        : undefined) ||
+      'Invalid details, try again';
+
+    toast.error(message, { id: 'toastid-error' });
+  }
+}
     const isFormFilled = email.trim() !== '' && password.trim() !== '';
   return (
    <div  className="min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-white px-4">
@@ -110,7 +123,7 @@ const SignUpPage = () => {
            {showPassword ? <EyeOff/> : <Eye/>}
           </button>
         </div>
-        {error && <p className="text-red-600 text-sm">{error}</p>}
+        {/* {error && <p className="text-red-600 text-sm">{error}</p>} */}
         <button
           type="submit"
           disabled={!isFormFilled}

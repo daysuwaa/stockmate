@@ -32,6 +32,28 @@ if (existingPhone) {
     { message: "Phone already registered" },
     { status: 400 }
   );
+
+}
+const validatePhone = (phone: string) => {
+  const onlyDigits = phone.replace(/\D/g, ""); 
+  const length = onlyDigits.length;
+
+  if (length === 10 && /^[789]/.test(onlyDigits)) {
+    return true;
+  } else if (length === 11 && /^0/.test(onlyDigits)) {
+    return true;
+  } else if (length === 13 && /^234/.test(onlyDigits)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+if (!validatePhone(phone)) {
+  return NextResponse.json(
+    { message: "Invalid phone number format" },
+    { status: 400 }
+  );
 }
     // 4. Hash password
     const passwordHash = await hashPassword(password);
