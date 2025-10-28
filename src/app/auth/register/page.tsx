@@ -7,7 +7,7 @@ import { AppDispatch } from '@/app/redux/store/store';
 import { RootState } from '@/app/redux/store/store';
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import Logo from '@/app/components/Logo';
+import Logo from '@/app/components/common/Logo';
 
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,7 +32,7 @@ const SignUpPage = () => {
 
   if (registerUser.fulfilled.match(result)) {
     toast.success('Signed in successfully :)', { id: 'toastid-success' });
-    router.push('/dashboard');
+    router.push('/routes/dashboard');
   } 
   else if (registerUser.rejected.match(result)) {
     // Extract the message from the backend or fallback text
@@ -118,7 +118,7 @@ const SignUpPage = () => {
           <button 
             type="button"
             onClick={toggleVisibility} 
-            className="absolute right-3 top-[30px]"
+            className="absolute right-3 cursor-pointer top-[30px]"
           >
            {showPassword ? <EyeOff/> : <Eye/>}
           </button>
@@ -127,7 +127,7 @@ const SignUpPage = () => {
         <button
           type="submit"
           disabled={!isFormFilled}
-          className={`w-full py-2 rounded-sm text-sm cursor-pointer ${
+          className={`w-full cursor-pointer py-2 rounded-sm text-sm cursor-pointer ${
             isFormFilled
               ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"

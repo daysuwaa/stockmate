@@ -1,7 +1,7 @@
 // src/app/layout.tsx  <-- SERVER COMPONENT (no "use client" here)
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientProviders from "./ClientProviders"; // ✅ import client wrapper
+import ClientProviders from "./providers/ClientProviders"; // ✅ import client wrapper
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });

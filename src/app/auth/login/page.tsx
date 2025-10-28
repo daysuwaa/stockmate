@@ -7,7 +7,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { AppDispatch } from '@/app/redux/store/store';
 import { RootState } from '@/app/redux/store/store';
 import {toast} from "react-hot-toast"
-import Logo from '@/app/components/Logo';
+import Logo from '@/app/components/common/Logo';
 
 
 const Login = () => {
@@ -30,7 +30,7 @@ const Login = () => {
     const result = await dispatch(loginUser({email, password}));
     console.log(result);
     if (loginUser.fulfilled.match(result)) {
-      router.push('/dashboard');
+      router.push('/routes/dashboard');
      toast.success('Logged in successfully :)', {id:"toastid-sucess"})
     }
     if(loginUser.rejected.match(result)){
@@ -90,7 +90,7 @@ const Login = () => {
               type="button"
               disabled={status === 'loading'}
               onClick={toggleVisibility}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+              className="absolute right-4 cursor-pointer top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -102,7 +102,7 @@ const Login = () => {
           type="submit"
           disabled={!isFormFilled}
           onClick={onSubmit}
-          className={`w-full py-3.5 rounded-lg font-semibold text-white transition-all transform ${
+          className={`w-full py-3.5 cursor-pointer rounded-lg font-semibold text-white transition-all transform ${
             isFormFilled
               ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98]"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"

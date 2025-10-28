@@ -1,9 +1,9 @@
-import Footer from "./components/Footer";
-import Features from "./components/Home/Features";
-import Hero from "./components/Home/Hero";
-import Testimonials from "./components/Home/Testimonials";
-import UseCase from "./components/Home/UseCase";
-import Navbar from "./components/Navbar";
+import Footer from "../app/components/layout/Footer";
+import Features from "../app/components/home/Features";
+import Hero from "../app/components/home/Hero";
+import Testimonials from "../app/components/home/Testimonials";
+import UseCase from "../app/components/home/UseCase";
+import Navbar from "../app/components/layout/Navbar";
 
 export default function Home() {
   return (

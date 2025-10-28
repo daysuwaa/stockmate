@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/prisma";
+import { prisma } from "../../../lib/prisma";
 import { verifyToken } from "../_utils";
 
 export async function GET(req: Request) {
