@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#  StockMate
 
-## Getting Started
+StockMate is a simple, modern inventory management web app built with **Next.js**, **TypeScript**, and **Supabase**.  
+It helps small businesses and individuals keep track of stock levels, sales, and purchases with an intuitive dashboard and real-time updates.
 
-First, run the development server:
+---
 
+## Features
+
+- **Inventory Management** – Add, edit, and remove products easily.  
+- **Sales & Purchases Tracking** – Record transactions and view summaries.  
+- **Analytics Dashboard** – Visualize product trends and stock status.  
+- **Authentication** – Secure user sign up and sign in with Supabase Auth.  
+-  **Real-time Sync** – Inventory data updates across sessions instantly.  
+-  **Responsive UI** – Built with Tailwind CSS for smooth layouts on all devices.  
+
+---
+
+##  Tech Stack
+
+| Category | Tools Used |
+|-----------|------------|
+| **Framework** | [Next.js 14](https://nextjs.org/) (App Router) |
+| **Language** | TypeScript |
+| **Database** | [Supabase](https://supabase.com/) (PostgreSQL + Auth) |
+| **ORM** | [Prisma](https://www.prisma.io/) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) |
+| **State Management** | Redux Toolkit + RTK Query |
+| **UI Components** | ShadCN/UI (optional) |
+
+---
+
+
+##  Setup Instructions
+
+### 1. Clone the Repository
 ```bash
-npm run dev
+git clone https://github.com/daysuwaa/stockmate.git
+cd stockmate
+```
+### 2. Install Dependencies
+``` bash
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Create Environment Variables
+``` bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+DATABASE_URL=your_supabase_db_connection_string
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+### 4. Set up the Database
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Run the Devlopement Server
+``` bash
+npm run dev
 
-## Learn More
+```
+### Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Pull requests are welcome.
+If you’d like to add new features, please open an issue first to discuss what you’d like to change.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the MIT License — see the LICENSE file for details.
 
-## Deploy on Vercel
+### Author
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Adesuwa
+Software Developer
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
